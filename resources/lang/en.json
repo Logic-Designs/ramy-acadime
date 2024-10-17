@@ -3,5 +3,10 @@
     "The provided credentials are incorrect.": "The provided credentials are incorrect.",
     "Logged out successfully": "Logged out successfully",
     "Login successful.": "Login successful.",
-    "Invalid language specified.": "Invalid language specified."
+    "Invalid language specified.": "Invalid language specified.",
+    "Permissions assigned to role successfully.": "Permissions assigned to role successfully.",
+    "Permissions removed from role successfully.": "Permissions removed from role successfully.",
+    "Permissions retrieved successfully.": "Permissions retrieved successfully.",
+    "Role not found.": "Role not found.",
+    "User does not have the right permissions.": "User does not have the right permissions."
 }
