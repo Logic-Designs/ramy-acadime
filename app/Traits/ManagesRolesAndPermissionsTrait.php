@@ -10,20 +10,20 @@ use Illuminate\Validation\ValidationException;
 
 trait ManagesRolesAndPermissionsTrait
 {
-    // List all roles with permissions
-    public function listRolesWithPermissions()
+
+    public function getRoles()
     {
         return Role::with('permissions')->where('guard_name', 'sanctum')->get();
     }
 
     // List all permissions
-    public function listPermissions()
+    public function getPermissions()
     {
         return Permission::where('guard_name', 'sanctum')->get();
     }
 
     // Assign permissions to a role
-    public function assignPermissions($roleId, $permissions)
+    public function assignPermissionsToRole($roleId, $permissions)
     {
         $role = Role::findById($roleId, 'sanctum');
 
@@ -36,7 +36,7 @@ trait ManagesRolesAndPermissionsTrait
         $role->givePermissionTo($permissions);
     }
 
-    public function removePermissions($roleId, $permissions)
+    public function removePermissionsFromRole($roleId, $permissions)
     {
         $role = Role::findById($roleId, 'sanctum');
 
@@ -49,7 +49,7 @@ trait ManagesRolesAndPermissionsTrait
         $role->revokePermissionTo($permissions);
     }
 
-    public function listPermissionsForRole($roleId)
+    public function getPermissionsForRole($roleId)
     {
         $role = Role::findById($roleId, 'sanctum');
 
@@ -86,23 +86,7 @@ trait ManagesRolesAndPermissionsTrait
         }
     }
 
-    public function assignPermissionToRole($roleId, $permissions)
-    {
-        $role = Role::findById($roleId, 'sanctum');
-
-        if (!$role) {
-            throw ValidationException::withMessages([
-                'role' => [__('Role not found.')],
-            ]);
-        }
-
-        foreach ($permissions as $permissionName) {
-            $this->createPermissionIfNotExists($permissionName);
-            $role->givePermissionTo($permissionName);
-        }
-    }
-
-    public function assignPermissionToRoleByName($roleName, $permissions)
+    public function assignPermissionsToRoleByName($roleName, $permissions)
     {
         $role = $this->createRoleIfNotExists($roleName);
 

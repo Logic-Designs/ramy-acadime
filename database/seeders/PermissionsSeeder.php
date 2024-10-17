@@ -42,9 +42,9 @@ class PermissionsSeeder extends Seeder
             $this->createPermissionIfNotExists($permission);
         }
 
-        $this->assignPermissionToRoleByName('admin', Permission::all()->pluck('name')->toArray());
+        $this->assignPermissionsToRoleByName('admin', Permission::all()->pluck('name')->toArray());
 
-        $this->assignPermissionToRoleByName('dev', ['view logs']);
+        $this->assignPermissionsToRoleByName('dev', ['view logs']);
     }
 
 }

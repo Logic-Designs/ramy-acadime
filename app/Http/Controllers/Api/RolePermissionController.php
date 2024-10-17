@@ -14,7 +14,7 @@ class RolePermissionController extends Controller
 
     public function listRolesWithPermissions()
     {
-        $roles = $this->listRolesWithPermissions();
+        $roles = $this->getRoles();
         return Response::success('Roles retrieved successfully.', [
             'roles' => $roles,
         ]);
@@ -22,7 +22,7 @@ class RolePermissionController extends Controller
 
     public function listPermissions()
     {
-        $permissions = $this->listPermissions();
+        $permissions = $this->getPermissions();
 
         return Response::success('Permissions retrieved successfully.', [
             'permissions' => $permissions,
@@ -31,14 +31,14 @@ class RolePermissionController extends Controller
 
     public function assignPermission(RolePermissionRequest $request, $roleId)
     {
-        $this->assignPermissions($roleId, $request->permissions);
+        $this->assignPermissionsToRole($roleId, $request->permissions);
 
         return Response::success('Permissions assigned to role successfully.');
     }
 
     public function removePermission(RolePermissionRequest $request, $roleId)
     {
-        $this->removePermissions($roleId, $request->permissions);
+        $this->removePermissionsFromRole($roleId, $request->permissions);
 
         return Response::success('Permissions removed from role successfully.');
     }
@@ -46,7 +46,7 @@ class RolePermissionController extends Controller
     public function listPermissionsForRole($roleId)
     {
 
-        $permissions = $this->listPermissionsForRole($roleId);
+        $permissions = $this->getPermissionsForRole($roleId);
 
 
         return Response::success('Permissions retrieved successfully.', [
