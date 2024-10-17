@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
+        Schema::defaultStringLength(191);
+
+
         Response::macro('success', function ($message, $data = [], $status = 200, $pagination = []) {
             $response = [
                 'status' => true,
