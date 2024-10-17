@@ -1,6 +1,7 @@
 {
-    "User registered successfully.": "User registered successfully.",
+    "User registered successfully.": "User registered successfully. ar",
     "The provided credentials are incorrect.": "The provided credentials are incorrect.",
     "Logged out successfully": "Logged out successfully",
-    "Login successful.": "Login successful."
+    "Login successful.": "Login successful.",
+    "Invalid language specified.": "Invalid language specified."
 }
