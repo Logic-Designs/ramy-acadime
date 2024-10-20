@@ -24,10 +24,7 @@ class PermissionsSeeder extends Seeder
 
         // Create CRUD permissions for each resource
         foreach ($resources as $resource) {
-            $this->createPermissionIfNotExists("list {$resource}");
-            $this->createPermissionIfNotExists("create {$resource}");
-            $this->createPermissionIfNotExists("update {$resource}");
-            $this->createPermissionIfNotExists("delete {$resource}");
+            $this->createCRUDPermission($resource);
         }
 
         // General permissions

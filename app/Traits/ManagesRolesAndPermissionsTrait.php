@@ -76,6 +76,14 @@ trait ManagesRolesAndPermissionsTrait
         );
     }
 
+    public function createCRUDPermission($permissionName)
+    {
+        $this->createPermissionIfNotExists("list {$permissionName}");
+        $this->createPermissionIfNotExists("create {$permissionName}");
+        $this->createPermissionIfNotExists("update {$permissionName}");
+        $this->createPermissionIfNotExists("delete {$permissionName}");
+    }
+
 
     public function assignRoleToUser($user, $roleName)
     {
