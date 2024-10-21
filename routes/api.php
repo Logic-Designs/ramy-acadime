@@ -26,7 +26,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::middleware('role:user')->group(function(){
             Route::get('/children', [UserController::class, 'getChildren']);
             Route::post('/children', [UserController::class, 'storeChildUser']);
-            Route::delete('/children/{child}', [UserController::class, 'detachChildUser']);
+            Route::delete('/children/{child}', [UserController::class, 'detachChildUser'])
+            ->can('deleteChild', 'child');
         });
 
         Route::get('', [UserController::class, 'index'])->can('list users');

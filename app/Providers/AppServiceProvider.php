@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\User;
+use App\Policies\UserPolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -25,6 +28,8 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         require_once app_path('Helpers/Pagination.php');
+
+        Gate::policy(User::class, UserPolicy::class);
 
         Response::macro('success', function ($message, $data = [], $status = 200, $pagination = null) {
             $response = [

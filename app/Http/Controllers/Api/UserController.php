@@ -76,12 +76,8 @@ class UserController extends Controller
     {
         /** @var User $parent */
         $parent = Auth::user();
-        if ($parent->children()->where('child_id', $child->id)->exists()) {
-            $parent->children()->detach($child->id);
-            return Response::success('Child account detached successfully.');
-        }
-
-        return Response::error('This child is not associated with the parent.', [], 404);
+        $parent->children()->detach($child->id);
+        return Response::success('Child account detached successfully.');
     }
 
 }
