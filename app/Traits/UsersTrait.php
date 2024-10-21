@@ -16,7 +16,8 @@ trait UsersTrait
      */
     public function listUsers()
     {
-        return User::all();
+        $perPage = request('perPage')?? 15;
+        return User::paginate($perPage);
     }
 
     /**

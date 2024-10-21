@@ -25,15 +25,23 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
 
-        Response::macro('success', function ($message, $data = [], $status = 200, $pagination = []) {
+        Response::macro('success', function ($message, $data = [], $status = 200, $pagination_data = null) {
             $response = [
                 'status' => true,
                 'message' => __($message),
                 'data' => $data,
             ];
 
-            if (!empty($pagination)) {
-                $response['pagination'] = $pagination;
+            if ($pagination_data) {
+                $response['pagination'] = [
+                    'total' => $pagination_data->total(),
+                    'current_page' => $pagination_data->currentPage(),
+                    'last_page' => $pagination_data->lastPage(),
+                    'per_page' => $pagination_data->perPage(),
+                    'from' => $pagination_data->firstItem(),
+                    'to' => $pagination_data->lastItem(),
+                    'item_count' => $pagination_data->count()
+                ];
             }
 
             return response()->json($response, $status);
