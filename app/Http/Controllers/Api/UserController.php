@@ -7,19 +7,21 @@ use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Traits\PaginationTrait;
 use App\Traits\UsersTrait;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
 class UserController extends Controller
 {
-    use UsersTrait;
+    use UsersTrait, PaginationTrait;
 
     public function index()
     {
         $users = $this->listUsers();
         return Response::success('Users retrieved successfully.', [
             'users' => UserResource::collection($users)
-        ], 200, $users);
+        ], 200, $this->getPagination($users));
     }
 
 
@@ -46,4 +48,40 @@ class UserController extends Controller
         $this->deleteUser($user);
         return Response::success('User deleted successfully.');
     }
+
+    public function storeChildUser(StoreUserRequest $request)
+    {
+        /** @var User $parent */
+        $parent = Auth::user();
+
+        $child = $this->createUser($request->validated());
+
+        $parent->children()->attach($child->id);
+
+        return Response::success('Child account Created successfully.', new UserResource($child));
+    }
+
+    public function getChildren()
+    {
+        /** @var User $parent */
+        $parent = Auth::user();
+        $children = $this->paginat($parent->children());
+
+        return Response::success('Children retrieved successfully.',
+                                UserResource::collection($children), 200,
+                                $this->getPagination($children));
+    }
+
+    public function detachChildUser(User $child)
+    {
+        /** @var User $parent */
+        $parent = Auth::user();
+        if ($parent->children()->where('child_id', $child->id)->exists()) {
+            $parent->children()->detach($child->id);
+            return Response::success('Child account detached successfully.');
+        }
+
+        return Response::error('This child is not associated with the parent.', [], 404);
+    }
+
 }

@@ -77,4 +77,15 @@ class User extends Authenticatable
     {
         return 'slug';
     }
+
+
+    public function parents()
+    {
+        return $this->belongsToMany(User::class, 'parent_child', 'child_id', 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->belongsToMany(User::class, 'parent_child', 'parent_id', 'child_id');
+    }
 }

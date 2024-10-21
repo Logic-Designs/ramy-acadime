@@ -20,5 +20,9 @@
     "Resource not found": "Resource not found",
     "Unauthorized access": "Unauthorized access",
     "Unauthenticated": "Unauthenticated",
-    "Validation failed": "Validation failed"
+    "Validation failed": "Validation failed",
+    "Child account detached successfully.": "Child account detached successfully.",
+    "This child is not associated with the parent.": "This child is not associated with the parent.",
+    "Children retrieved successfully.": "Children retrieved successfully.",
+    "Child account Created successfully.": "Child account Created successfully."
 }

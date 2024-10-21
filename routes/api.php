@@ -13,25 +13,32 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
 
-    Route::middleware('permission:view roles')->group(function () {
+    Route::middleware('role:admin')->group(function () {
         Route::get('roles', [RolePermissionController::class, 'listRolesWithPermissions']);
         Route::get('roles/{roleId}/permissions', [RolePermissionController::class, 'listPermissionsForRole']);
         Route::get('permissions', [RolePermissionController::class, 'listPermissions']);
-    });
-
-    Route::middleware('permission:update roles')->group(function () {
         Route::post('roles/{roleId}/permissions', [RolePermissionController::class, 'assignPermission']);
         Route::delete('roles/{roleId}/permissions', [RolePermissionController::class, 'removePermission']);
     });
 
 
     Route::prefix('users')->group(function () {
+        Route::middleware('role:user')->group(function(){
+            Route::get('/children', [UserController::class, 'getChildren']);
+            Route::post('/children', [UserController::class, 'storeChildUser']);
+            Route::delete('/children/{child}', [UserController::class, 'detachChildUser']);
+        });
+
         Route::get('', [UserController::class, 'index'])->can('list users');
         Route::post('', [UserController::class, 'store'])->can('create users');
         Route::get('/{user}', [UserController::class, 'show'])->can('list users');
         Route::put('/{user}', [UserController::class, 'update'])->can('update users');
         Route::delete('/{user}', [UserController::class, 'destroy'])->can('delete users');
+
+
     });
+
+
 
 });
 

@@ -8,6 +8,7 @@ use Illuminate\Validation\ValidationException;
 
 trait UsersTrait
 {
+    use PaginationTrait;
     /**
      * List all users with pagination.
      *
@@ -16,8 +17,7 @@ trait UsersTrait
      */
     public function listUsers()
     {
-        $perPage = request('perPage')?? 15;
-        return User::paginate($perPage);
+        return $this->paginat(User::query());
     }
 
     /**
