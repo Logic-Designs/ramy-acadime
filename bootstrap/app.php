@@ -41,7 +41,7 @@ function handleApiException(Throwable $exception, $request)
 {
     if ($exception instanceof ValidationException) {
         return Response::error(
-            __('validation.failed'),
+            __('Validation failed'),
             $exception->errors(),
             422
         );
@@ -49,7 +49,7 @@ function handleApiException(Throwable $exception, $request)
 
     if ($exception instanceof AuthenticationException) {
         return Response::error(
-            __('auth.unauthenticated'),
+            __('Unauthenticated'),
             [],
             401
         );
@@ -57,7 +57,7 @@ function handleApiException(Throwable $exception, $request)
 
     if ($exception instanceof \Illuminate\Auth\Access\AuthorizationException) {
         return Response::error(
-            __('auth.unauthorized'),
+            __('Unauthorized access'),
             [],
             403
         );
@@ -65,7 +65,7 @@ function handleApiException(Throwable $exception, $request)
 
     if ($exception instanceof NotFoundHttpException) {
         return Response::error(
-            __('errors.not_found'),
+            __('Resource not found'),
             [],
             404
         );
@@ -73,7 +73,7 @@ function handleApiException(Throwable $exception, $request)
 
     if ($exception instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException) {
         return Response::error(
-            __('errors.method_not_allowed'),
+            __('Method not allowed'),
             [],
             405
         );
@@ -82,7 +82,7 @@ function handleApiException(Throwable $exception, $request)
     // Handling Throttle Limit Exceeded (Too Many Requests)
     if ($exception instanceof \Illuminate\Http\Exceptions\ThrottleRequestsException) {
         return Response::error(
-            __('errors.too_many_requests'),
+            __('Too many requests'),
             [],
             429
         );
@@ -90,17 +90,18 @@ function handleApiException(Throwable $exception, $request)
 
     if ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
         return Response::error(
-            $exception->getMessage() ?: __('errors.internal_error'),
+            $exception->getMessage() ?: __('Internal server error'),
             [],
             $exception->getStatusCode()
         );
     }
 
     return Response::error(
-        $exception->getMessage() ?: __('errors.internal_error'),
+        $exception->getMessage() ?: __('Internal server error'),
         [],
         500
     );
+
 
 
 }

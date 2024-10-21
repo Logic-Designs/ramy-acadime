@@ -8,5 +8,17 @@
     "Permissions removed from role successfully.": "Permissions removed from role successfully.",
     "Permissions retrieved successfully.": "Permissions retrieved successfully.",
     "Role not found.": "Role not found.",
-    "User does not have the right permissions.": "User does not have the right permissions."
+    "User does not have the right permissions.": "User does not have the right permissions.",
+    "User deleted successfully.": "User deleted successfully.",
+    "User updated successfully.": "User updated successfully.",
+    "User retrieved successfully.": "User retrieved successfully.",
+    "User created successfully.": "User created successfully.",
+    "Users retrieved successfully.": "Users retrieved successfully.",
+    "Internal server error": "Internal server error",
+    "Too many requests": "Too many requests",
+    "Method not allowed": "Method not allowed",
+    "Resource not found": "Resource not found",
+    "Unauthorized access": "Unauthorized access",
+    "Unauthenticated": "Unauthenticated",
+    "Validation failed": "Validation failed"
 }
