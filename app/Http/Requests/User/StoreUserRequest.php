@@ -27,7 +27,7 @@ class StoreUserRequest extends FormRequest
         $roles = Role::pluck('name')->toArray();
 
         return [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:users,name',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
             'role' => ['nullables', 'string', Rule::in($roles)],

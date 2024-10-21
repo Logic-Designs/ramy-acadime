@@ -26,8 +26,8 @@ class UpdateUserRequest extends FormRequest
         $roles = Role::pluck('name')->toArray();
 
         return [
-            'name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $this->route('id'),
+            'name' => 'sometimes|required|string|max:255|unique:users,name,' . $this->route('user'),
+            'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $this->route('user'),
             'password' => 'nullable|string|min:8|confirmed',
             'role' => ['nullable', 'string', Rule::in($roles)],
         ];

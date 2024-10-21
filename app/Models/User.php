@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Traits\ManagesRolesAndPermissionsTrait;
+use App\Traits\SlugTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -15,7 +16,8 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens, HasRoles, ManagesRolesAndPermissionsTrait;
+    use HasFactory, Notifiable, HasApiTokens, HasRoles,
+        ManagesRolesAndPermissionsTrait, SlugTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -26,6 +28,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'slug',
     ];
 
     /**
@@ -55,8 +58,23 @@ class User extends Authenticatable
     {
         parent::boot();
 
+        static::creating(function ($user) {
+            $user->slug = static::generateUniqueSlug($user->name, self::class);
+        });
+
+        static::updating(function ($user) {
+            if ($user->isDirty('name')) {
+                $user->slug = static::generateUniqueSlug($user->name, self::class);
+            }
+        });
+
         static::created(function ($user) {
             $user->assignRoleToUser($user, 'user');
         });
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }
