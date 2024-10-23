@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CountryController;
+use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\RolePermissionController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +21,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('permissions', [RolePermissionController::class, 'listPermissions']);
         Route::post('roles/{roleId}/permissions', [RolePermissionController::class, 'assignPermission']);
         Route::delete('roles/{roleId}/permissions', [RolePermissionController::class, 'removePermission']);
+
+        Route::apiResource('countries', CountryController::class);
+        Route::apiResource('locations', LocationController::class);
+
     });
 
 

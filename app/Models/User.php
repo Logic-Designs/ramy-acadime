@@ -58,16 +58,6 @@ class User extends Authenticatable
     {
         parent::boot();
 
-        static::creating(function ($user) {
-            $user->slug = static::generateUniqueSlug($user->name, self::class);
-        });
-
-        static::updating(function ($user) {
-            if ($user->isDirty('name')) {
-                $user->slug = static::generateUniqueSlug($user->name, self::class);
-            }
-        });
-
         static::created(function ($user) {
             $user->assignRoleToUser($user, 'user');
         });

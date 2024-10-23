@@ -20,7 +20,7 @@ trait PaginationTrait
         ];
     }
 
-    function paginat($object)
+    function paginate($object)
     {
         $perPage = request('perPage') ?? $this->perPage;
         return $object->paginate($perPage);

@@ -17,7 +17,7 @@ trait UsersTrait
      */
     public function listUsers()
     {
-        return $this->paginat(User::query());
+        return $this->paginate(User::query());
     }
 
     /**
