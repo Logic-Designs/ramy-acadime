@@ -8,6 +8,16 @@ use App\Helpers\LocaleHelper;
 
 class LocationResource extends JsonResource
 {
+
+    protected $isTwoLang;
+
+    // Allow passing an admin flag into the resource
+    public function __construct($resource, $isTwoLang = false)
+    {
+        parent::__construct($resource);
+        $this->isTwoLang = $isTwoLang;
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -16,7 +26,7 @@ class LocationResource extends JsonResource
     public function toArray(Request $request): array
     {
         // Fetch the localized fields for regular users
-        $localizedData = LocaleHelper::getLocalizedFields($this, ['name', 'city', 'address']);
+        $localizedData = LocaleHelper::getLocalizedFields($this, ['name', 'city', 'address'], $this->isTwoLang);
 
         return
             $localizedData + [

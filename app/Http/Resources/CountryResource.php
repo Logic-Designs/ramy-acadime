@@ -8,6 +8,16 @@ use App\Helpers\LocaleHelper;
 
 class CountryResource extends JsonResource
 {
+
+    protected $isTwoLang;
+
+    // Allow passing an admin flag into the resource
+    public function __construct($resource, $isTwoLang = false)
+    {
+        parent::__construct($resource);
+        $this->isTwoLang = $isTwoLang;
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -15,7 +25,7 @@ class CountryResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $localizedData = LocaleHelper::getLocalizedFields($this, ['name']);
+        $localizedData = LocaleHelper::getLocalizedFields($this, ['name'], $this->isTwoLang);
 
         return
             $localizedData + [
