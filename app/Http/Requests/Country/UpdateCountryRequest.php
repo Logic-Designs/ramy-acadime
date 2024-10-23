@@ -22,7 +22,8 @@ class UpdateCountryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:countries,name,' . $this->country->id,
+            'name_en' => 'string|max:255|unique:countries,name_en,' . $this->country->id,
+            'name_ar' => 'string|max:255|unique:countries,name_ar,' . $this->country->id,
         ];
     }
 }

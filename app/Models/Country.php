@@ -10,7 +10,10 @@ class Country extends Model
 {
     use HasFactory, SlugTrait;
 
-    protected $fillable = ['name', 'code', 'slug'];
+    protected $fillable = ['name_en', 'name_ar','code', 'slug'];
+
+    protected $slugSource = 'name_en';
+
 
     public function getRouteKeyName()
     {

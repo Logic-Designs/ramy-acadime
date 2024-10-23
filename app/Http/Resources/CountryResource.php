@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Helpers\LocaleHelper;
 
 class CountryResource extends JsonResource
 {
@@ -14,9 +15,11 @@ class CountryResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $localizedData = LocaleHelper::getLocalizedFields($this, ['name']);
+
+        return
+            $localizedData + [
             'id' => $this->id,
-            'name' => $this->name,
             'slug' => $this->slug,
             'locations' => LocationResource::collection($this->whenLoaded('locations')),
             'created_at' => $this->created_at,

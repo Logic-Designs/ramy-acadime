@@ -22,7 +22,8 @@ class StoreCountryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:countries,name',
+            'name_en' => 'required|string|max:255|unique:countries,name_en',
+            'name_ar' => 'required|string|max:255|unique:countries,name_ar',
         ];
     }
 }

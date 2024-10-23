@@ -22,11 +22,23 @@ class StoreLocationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:locations,name',
+            // Ensure both English and Arabic names are validated and are unique
+            'name_en' => 'required|string|max:255|unique:locations,name_en',
+            'name_ar' => 'required|string|max:255|unique:locations,name_ar',
+
+            // Ensure country exists in the countries table
             'country_id' => 'required|exists:countries,id',
-            'city' => 'required|string',
-            'address' => 'required|string',
-            'map' => 'required|url',
+
+            // Ensure both English and Arabic cities are validated
+            'city_en' => 'required|string|max:255',
+            'city_ar' => 'required|string|max:255',
+
+            // Validate addresses (optional, as per your requirements)
+            'address_en' => 'nullable|string|max:255',
+            'address_ar' => 'nullable|string|max:255',
+
+            // Ensure the map field is a valid URL
+            'map' => 'nullable|url',
         ];
     }
 }

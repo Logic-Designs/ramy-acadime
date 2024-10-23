@@ -9,13 +9,13 @@ trait SlugTrait
     /**
      * Generate a unique slug for any model.
      *
-     * @param string $name
+     * @param string $value - The value to generate the slug from.
      * @param string $column - The column where the slug will be stored (usually 'slug').
      * @return string
      */
-    public static function generateUniqueSlug($name, $column = 'slug')
+    public static function generateUniqueSlug($value, $column = 'slug')
     {
-        $slug = Str::slug($name);
+        $slug = Str::slug($value);
         $originalSlug = $slug;
         $count = 1;
 
@@ -38,16 +38,18 @@ trait SlugTrait
     {
         // On creating a new model
         static::creating(function ($model) {
+            $sourceColumn = $model->slugSource ?? 'name';  // Default to 'name' if slugSource is not set
             if (empty($model->slug)) {
-                $model->slug = self::generateUniqueSlug($model->name); // Adjust based on the attribute used for slug generation
+                $model->slug = self::generateUniqueSlug($model->$sourceColumn);
             }
         });
 
         // On updating an existing model
         static::updating(function ($model) {
-            // Only update the slug if the name has changed
-            if ($model->isDirty('name')) {
-                $model->slug = self::generateUniqueSlug($model->name);
+            $sourceColumn = $model->slugSource ?? 'name';  // Default to 'name' if slugSource is not set
+            // Only update the slug if the source column value has changed
+            if ($model->isDirty($sourceColumn)) {
+                $model->slug = self::generateUniqueSlug($model->$sourceColumn);
             }
         });
     }

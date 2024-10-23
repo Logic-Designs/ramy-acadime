@@ -10,7 +10,10 @@ class Location extends Model
 {
     use HasFactory, SlugTrait;
 
-    protected $fillable = ['name', 'slug','country_id', 'city', 'address', 'map'];
+    protected $fillable = ['name_en', 'name_ar','slug','country_id', 'city_en', 'city_ar',
+                        'address_en', 'address_ar','map'];
+
+    protected $slugSource = 'name_en';
 
     public function getRouteKeyName()
     {
