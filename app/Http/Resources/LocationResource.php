@@ -26,16 +26,15 @@ class LocationResource extends JsonResource
     public function toArray(Request $request): array
     {
         // Fetch the localized fields for regular users
-        $localizedData = LocaleHelper::getLocalizedFields($this, ['name', 'city', 'address'], $this->isTwoLang);
+        $localizedData = LocaleHelper::getLocalizedFields($this, ['name', 'address'], $this->isTwoLang);
 
         return
             $localizedData + [
             'id' => $this->id,
             'slug' => $this->slug,
             'map' => $this->map,
-            'country_slug' => $this->country->slug,
             'country_name' => LocaleHelper::getLocalizedField($this->country, 'name'),
-            'country_id' => $this->country->id,
+            'city_id' => $this->city->id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

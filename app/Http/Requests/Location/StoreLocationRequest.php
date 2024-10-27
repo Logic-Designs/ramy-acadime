@@ -27,11 +27,8 @@ class StoreLocationRequest extends FormRequest
             'name_ar' => 'required|string|max:255|unique:locations,name_ar',
 
             // Ensure country exists in the countries table
-            'country_id' => 'required|exists:countries,id',
+            'city_id' => 'required|exists:cities,id',
 
-            // Ensure both English and Arabic cities are validated
-            'city_en' => 'required|string|max:255',
-            'city_ar' => 'required|string|max:255',
 
             // Validate addresses (optional, as per your requirements)
             'address_en' => 'nullable|string|max:255',

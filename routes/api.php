@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\RolePermissionController;
@@ -23,6 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('roles/{roleId}/permissions', [RolePermissionController::class, 'removePermission']);
 
         Route::apiResource('countries', CountryController::class);
+        Route::apiResource('cities', CityController::class);
         Route::apiResource('locations', LocationController::class);
 
     });

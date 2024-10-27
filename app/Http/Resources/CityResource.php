@@ -6,12 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Helpers\LocaleHelper;
 
-class CountryResource extends JsonResource
+class CityResource extends JsonResource
 {
-
     protected $isTwoLang;
 
-    // Allow passing an admin flag into the resource
+    // Allow passing a flag to support two languages
     public function __construct($resource, $isTwoLang = false)
     {
         parent::__construct($resource);
@@ -25,14 +24,16 @@ class CountryResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // Fetch the localized fields for the city
         $localizedData = LocaleHelper::getLocalizedFields($this, ['name'], $this->isTwoLang);
 
         return
             $localizedData + [
             'id' => $this->id,
             'slug' => $this->slug,
-            'locations' => LocationResource::collection($this->whenLoaded('locations')),
-            'cities' => CityResource::collection($this->whenLoaded('cities')),
+            'country_id' => $this->country->id,
+            'country_name' => LocaleHelper::getLocalizedField($this->country, 'name'),
+            'locations' => LocationResource::collection($this->whenLoaded('locations')), // Include related locations
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

@@ -10,7 +10,7 @@ class Location extends Model
 {
     use HasFactory, SlugTrait;
 
-    protected $fillable = ['name_en', 'name_ar','slug','country_id', 'city_en', 'city_ar',
+    protected $fillable = ['name_en', 'name_ar','slug','city_id',
                         'address_en', 'address_ar','map'];
 
     protected $slugSource = 'name_en';
@@ -21,8 +21,14 @@ class Location extends Model
     }
 
 
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
+
     public function country()
     {
-        return $this->belongsTo(Country::class);
+        return $this->hasOneThrough(Country::class, City::class, 'id', 'id', 'city_id', 'country_id');
     }
+
 }

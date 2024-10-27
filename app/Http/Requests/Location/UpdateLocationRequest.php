@@ -23,15 +23,10 @@ class UpdateLocationRequest extends FormRequest
     {
         return [
             // Validate English and Arabic names only if provided and ensure uniqueness
-            'name_en' => 'nullable|string|max:255|unique:locations,name_en,' . $this->location->id,
-            'name_ar' => 'nullable|string|max:255|unique:locations,name_ar,' . $this->location->id,
+            'name_en' => 'string|max:255|unique:locations,name_en,' . $this->location->id,
+            'name_ar' => 'string|max:255|unique:locations,name_ar,' . $this->location->id,
 
-            // Ensure the country exists in the countries table if provided
-            'country_id' => 'nullable|exists:countries,id',
-
-            // Validate cities in both English and Arabic if provided
-            'city_en' => 'nullable|string|max:255',
-            'city_ar' => 'nullable|string|max:255',
+            'city_id' => 'exists:cities,id',
 
             // Validate addresses (optional) if provided
             'address_en' => 'nullable|string|max:255',

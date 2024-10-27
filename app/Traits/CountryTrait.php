@@ -10,7 +10,7 @@ use App\Models\Country;
 
         public function listCountries()
         {
-            return $this->paginate(Country::with('locations'));
+            return $this->paginate(Country::with('cities'));
         }
 
     public function createCountry(array $data)

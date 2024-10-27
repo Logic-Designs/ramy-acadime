@@ -22,6 +22,12 @@ class Country extends Model
 
     public function locations()
     {
-        return $this->hasMany(Location::class);
+        return $this->hasManyThrough(Location::class, City::class);
     }
+
+    public function cities()
+    {
+        return $this->hasMany(City::class);
+    }
+
 }
