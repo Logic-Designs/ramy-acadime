@@ -31,11 +31,11 @@ trait UsersTrait
         $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'phone' => $data['phone'],
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name']?? null,
             'password' => Hash::make($data['password']),
         ]);
-
-        if(isset($data['role']))
-            $user->syncRoles($data['role']);
 
         return $user;
     }
@@ -68,13 +68,8 @@ trait UsersTrait
      */
     public function updateUser(User $user, array $data)
     {
-
-        // Check if the password is present in the data and hash it
         if (isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);
-        }
-        if (isset($data['role'])) {
-            $user->syncRoles([$data['role']]);
         }
 
         $user->update($data);

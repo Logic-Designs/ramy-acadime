@@ -7,6 +7,7 @@ use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Services\UserService;
 use App\Traits\PaginationTrait;
 use App\Traits\UsersTrait;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,13 @@ use Illuminate\Support\Facades\Response;
 class UserController extends Controller
 {
     use UsersTrait, PaginationTrait;
+
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
 
     public function index()
     {
@@ -27,7 +35,8 @@ class UserController extends Controller
 
     public function store(StoreUserRequest $request)
     {
-        $user = $this->createUser($request->validated());
+        $user = $this->userService->store($request->validated());
+
         return Response::success('User created successfully.', new UserResource($user));
     }
 
@@ -39,7 +48,8 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request, User $user)
     {
-        $user = $this->updateUser($user, $request->validated());
+        $user = $this->userService->update($user ,$request->validated());
+
         return Response::success('User updated successfully.', new UserResource($user));
     }
 
@@ -65,7 +75,7 @@ class UserController extends Controller
     {
         /** @var User $parent */
         $parent = Auth::user();
-        $children = $this->paginat($parent->children());
+        $children = $this->paginate($parent->children());
 
         return Response::success('Children retrieved successfully.',
                                 UserResource::collection($children), 200,

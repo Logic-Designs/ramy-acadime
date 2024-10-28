@@ -29,7 +29,13 @@ class User extends Authenticatable
         'email',
         'password',
         'slug',
+        'phone',
+        'first_name',
+        'last_name'
     ];
+
+    protected $slugSource = 'name';
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -59,7 +65,12 @@ class User extends Authenticatable
         parent::boot();
 
         static::created(function ($user) {
-            $user->assignRoleToUser($user, 'user');
+            if (! $user->roles->count() ) {
+                $role = Role::firstOrCreate(
+                    ['name' =>'user', 'guard_name' => 'sanctum']
+                );
+                $user->syncRoles($role);
+            }
         });
     }
 
@@ -78,4 +89,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'parent_child', 'parent_id', 'child_id');
     }
+
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
+
 }

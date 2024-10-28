@@ -8,6 +8,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
@@ -15,13 +16,21 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     // Register new user
     public function register(RegisterRequest $request)
     {
         $validatedData = $request->validated();
-        $validatedData['password'] = Hash::make($validatedData['password']);
+        // return $validatedData;
 
-        $user = User::create($validatedData);
+        $user = $this->userService->store($validatedData);
 
         return Response::success('User registered successfully.', ['user'=>new UserResource($user)], 201);
     }
@@ -29,11 +38,17 @@ class AuthController extends Controller
     // Login user
     public function login(LoginRequest $request)
     {
-        $user = User::where('email', $request->email)->first();
+        $identifier = $request->input('identifier');
+
+        $user = User::where(function ($query) use ($identifier) {
+            $query->where('email', $identifier)
+                ->orWhere('name', $identifier)
+                ->orWhere('phone', $identifier);
+        })->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
-                'email' => [__('The provided credentials are incorrect.')],
+                'identifier' => [__('The provided credentials are incorrect.')],
             ]);
         }
 
@@ -41,7 +56,7 @@ class AuthController extends Controller
 
         return Response::success('Login successful.', [
             'user' => new UserResource($user),
-            'token' => $token
+            'token' => $token,
         ], 200);
     }
 

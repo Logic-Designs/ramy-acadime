@@ -19,6 +19,8 @@ class AdminDevUsersSeeder extends Seeder
             [
                 'password' => bcrypt('12345678'),
                 'name' => 'Admin User',
+                'phone'=> '123456786',
+                'first_name'=> 'Admin',
             ]
         );
 
@@ -27,6 +29,8 @@ class AdminDevUsersSeeder extends Seeder
             [
                 'name' => 'Dev User',
                 'password' => bcrypt('12345678'),
+                'phone'=> '123456789',
+                'first_name'=> 'Dev',
             ]
         );
 

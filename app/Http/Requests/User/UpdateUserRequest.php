@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\User;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
@@ -24,12 +25,47 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         $roles = Role::pluck('name')->toArray();
+        $userId = $this->route('user')->id; // Get the ID of the user being updated
 
-        return [
-            'name' => 'sometimes|required|string|max:255|unique:users,name,' . $this->route('user'),
-            'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $this->route('user'),
+        $rules = [
+            'name' => [
+                'sometimes',
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('users')->ignore($userId),
+            ],
+            'email' => [
+                'sometimes',
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users')->ignore($userId),
+            ],
+            'phone' => [
+                'sometimes',
+                'required',
+                'string',
+                'max:15',
+                Rule::unique('users')->ignore($userId),
+            ],
             'password' => 'nullable|string|min:8|confirmed',
+            'first_name' => 'nullable|string',
+            'last_name' => 'nullable|string',
             'role' => ['nullable', 'string', Rule::in($roles)],
         ];
+
+        if (User::find($userId)->hasRole('user')) {
+            $rules = array_merge($rules, [
+                'address' => 'nullable|string|max:255',
+                'bio' => 'nullable|string|max:500',
+                'birthday' => 'nullable|date',
+                'gender' => ['nullable', 'string', Rule::in(['male', 'female'])],
+                'city_id' => 'nullable|integer|exists:countries,id',
+            ]);
+        }
+
+        return $rules;
     }
 }

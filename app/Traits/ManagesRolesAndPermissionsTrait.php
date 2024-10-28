@@ -90,7 +90,7 @@ trait ManagesRolesAndPermissionsTrait
         $role = $this->createRoleIfNotExists($roleName);
 
         if (!$user->hasRole($roleName)) {
-            $user->assignRole($role);
+            $user->syncRoles($role);
         }
     }
 

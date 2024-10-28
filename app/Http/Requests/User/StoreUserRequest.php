@@ -23,14 +23,28 @@ class StoreUserRequest extends FormRequest
      */
     public function rules(): array
     {
-
         $roles = Role::pluck('name')->toArray();
 
-        return [
+        $rules = [
             'name' => 'required|string|max:255|unique:users,name',
             'email' => 'required|string|email|max:255|unique:users,email',
+            'phone' => 'required|string|max:15|unique:users,phone',
             'password' => 'required|string|min:8|confirmed',
-            'role' => ['nullables', 'string', Rule::in($roles)],
+            'first_name' => 'required|string',
+            'last_name' => 'nullable|string',
+            'role' => ['nullable', 'string', Rule::in($roles)],
         ];
+
+        if ($this->input('role') === 'user' || ! $this->input('role')) {
+            $rules = array_merge($rules, [
+                'address' => 'required|string|max:255',
+                'bio' => 'nullable|string|max:500',
+                'birthday' => 'required|date',
+                'gender' => ['required', 'string', Rule::in(['male', 'female'])],
+                'city_id' => 'required|integer|exists:countries,id',
+            ]);
+        }
+
+        return $rules;
     }
 }
