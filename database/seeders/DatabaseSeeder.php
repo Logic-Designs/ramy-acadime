@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             // CountrySeeder::class,
             // CitySeeder::class,
             // LocationSeeder::class,
-            UsersSeeder::class,
+            // UsersSeeder::class,
+            LevelSessionSeeder::class,
 
         ]);
 

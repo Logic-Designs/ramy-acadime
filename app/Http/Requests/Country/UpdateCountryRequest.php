@@ -24,6 +24,8 @@ class UpdateCountryRequest extends FormRequest
         return [
             'name_en' => 'string|max:255|unique:countries,name_en,' . $this->country->id,
             'name_ar' => 'string|max:255|unique:countries,name_ar,' . $this->country->id,
+            'currency_code_en' => 'string|size:3',
+            'currency_code_ar' => 'string|max:255',
         ];
     }
 }

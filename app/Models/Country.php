@@ -10,7 +10,9 @@ class Country extends Model
 {
     use HasFactory, SlugTrait;
 
-    protected $fillable = ['name_en', 'name_ar','code', 'slug'];
+    protected $fillable = [
+        'name_en', 'name_ar', 'code', 'slug', 'currency_code_en', 'currency_code_ar'
+    ];
 
     protected $slugSource = 'name_en';
 

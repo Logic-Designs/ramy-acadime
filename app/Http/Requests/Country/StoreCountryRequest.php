@@ -24,6 +24,8 @@ class StoreCountryRequest extends FormRequest
         return [
             'name_en' => 'required|string|max:255|unique:countries,name_en',
             'name_ar' => 'required|string|max:255|unique:countries,name_ar',
+            'currency_code_en' => 'required|string|size:3',
+            'currency_code_ar' => 'required|string|max:255',
         ];
     }
 }

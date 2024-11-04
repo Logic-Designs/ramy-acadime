@@ -25,7 +25,7 @@ class CountryResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $localizedData = LocaleHelper::getLocalizedFields($this, ['name'], $this->isTwoLang);
+        $localizedData = LocaleHelper::getLocalizedFields($this, ['name', 'currency_code'], $this->isTwoLang);
 
         return
             $localizedData + [
