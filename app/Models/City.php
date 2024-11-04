@@ -15,16 +15,6 @@ class City extends Model
     protected $slugSource = 'name_en';
 
     /**
-     * Get the route key name for Laravel.
-     *
-     * @return string
-     */
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
-
-    /**
      * Define a relationship to the Country model.
      */
     public function country()

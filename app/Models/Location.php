@@ -15,12 +15,6 @@ class Location extends Model
 
     protected $slugSource = 'name_en';
 
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
-
-
     public function city()
     {
         return $this->belongsTo(City::class);

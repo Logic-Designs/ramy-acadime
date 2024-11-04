@@ -17,11 +17,6 @@ class Country extends Model
     protected $slugSource = 'name_en';
 
 
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
-
     public function locations()
     {
         return $this->hasManyThrough(Location::class, City::class);

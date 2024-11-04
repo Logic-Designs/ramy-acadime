@@ -53,4 +53,9 @@ trait SlugTrait
             }
         });
     }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }

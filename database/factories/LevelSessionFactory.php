@@ -20,7 +20,6 @@ class LevelSessionFactory extends Factory
             'name_ar' => $this->faker->unique()->word,
             'description_en' => $this->faker->sentence,
             'description_ar' => $this->faker->sentence,
-            'slug' => $this->faker->unique()->slug,
             'level_id' => Level::inRandomOrder()->value('id') ?? Level::factory(),
         ];
     }

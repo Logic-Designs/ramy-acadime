@@ -34,9 +34,12 @@ class LocaleHelper
         $dataFields = [];
 
         foreach ($fields as $field) {
-            $dataFields[$field] = self::getLocalizedField($model, $field);
 
-            if ($isAdmin) {
+            if (! $isAdmin || request()->has('lang')) {
+                $dataFields[$field] = self::getLocalizedField($model, $field);
+            }
+
+            if($isAdmin){
                 $dataFields[$field . '_en'] = $model->{$field . '_en'} ?? null;
                 $dataFields[$field . '_ar'] = $model->{$field . '_ar'} ?? null;
             }

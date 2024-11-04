@@ -6,9 +6,12 @@ use App\Models\Location;
 
 trait LocationTrait
 {
+    use PaginationTrait;
+
+
     public function listLocations()
     {
-        return Location::paginate(10); // Customize the pagination as needed
+        return $this->paginate(Location::query());
     }
 
     public function createLocation(array $data)

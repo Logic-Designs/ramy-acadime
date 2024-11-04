@@ -3,6 +3,8 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\CountryController;
+use App\Http\Controllers\Api\LevelController;
+use App\Http\Controllers\Api\LevelSessionController;
 use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\RolePermissionController;
 use App\Http\Controllers\Api\UserController;
@@ -26,6 +28,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('countries', CountryController::class);
         Route::apiResource('cities', CityController::class);
         Route::apiResource('locations', LocationController::class);
+        Route::apiResource('levels', LevelController::class);
+        Route::apiResource('level-sessions', LevelSessionController::class);
 
     });
 
