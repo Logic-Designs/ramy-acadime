@@ -30,78 +30,143 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (Throwable $exception, $request) {
             // Custom API exception handling
             if ($request->expectsJson()) {
-                return handleApiException($exception, $request);
+                if ($exception instanceof ValidationException) {
+                    return Response::error(
+                        __('Validation failed'),
+                        $exception->errors(),
+                        422
+                    );
+                }
+
+                if ($exception instanceof AuthenticationException) {
+                    return Response::error(
+                        __('Unauthenticated'),
+                        [],
+                        401
+                    );
+                }
+
+                if ($exception instanceof \Illuminate\Auth\Access\AuthorizationException) {
+                    return Response::error(
+                        __('Unauthorized access'),
+                        [],
+                        403
+                    );
+                }
+
+                if ($exception instanceof NotFoundHttpException) {
+                    return Response::error(
+                        __('Resource not found'),
+                        [],
+                        404
+                    );
+                }
+
+                if ($exception instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException) {
+                    return Response::error(
+                        __('Method not allowed'),
+                        [],
+                        405
+                    );
+                }
+
+                // Handling Throttle Limit Exceeded (Too Many Requests)
+                if ($exception instanceof \Illuminate\Http\Exceptions\ThrottleRequestsException) {
+                    return Response::error(
+                        __('Too many requests'),
+                        [],
+                        429
+                    );
+                }
+
+                if ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
+                    return Response::error(
+                        $exception->getMessage() ?: __('Internal server error'),
+                        [],
+                        $exception->getStatusCode()
+                    );
+                }
+
+                return Response::error(
+                    $exception->getMessage() ?: __('Internal server error'),
+                    [],
+                    500
+                );
+
+
+
             }
+
             return null;
         });
     })->create();
 
 
-function handleApiException(Throwable $exception, $request)
-{
-    if ($exception instanceof ValidationException) {
-        return Response::error(
-            __('Validation failed'),
-            $exception->errors(),
-            422
-        );
-    }
+// function handleApiException(Throwable $exception, $request)
+// {
+//     if ($exception instanceof ValidationException) {
+//         return Response::error(
+//             __('Validation failed'),
+//             $exception->errors(),
+//             422
+//         );
+//     }
 
-    if ($exception instanceof AuthenticationException) {
-        return Response::error(
-            __('Unauthenticated'),
-            [],
-            401
-        );
-    }
+//     if ($exception instanceof AuthenticationException) {
+//         return Response::error(
+//             __('Unauthenticated'),
+//             [],
+//             401
+//         );
+//     }
 
-    if ($exception instanceof \Illuminate\Auth\Access\AuthorizationException) {
-        return Response::error(
-            __('Unauthorized access'),
-            [],
-            403
-        );
-    }
+//     if ($exception instanceof \Illuminate\Auth\Access\AuthorizationException) {
+//         return Response::error(
+//             __('Unauthorized access'),
+//             [],
+//             403
+//         );
+//     }
 
-    if ($exception instanceof NotFoundHttpException) {
-        return Response::error(
-            __('Resource not found'),
-            [],
-            404
-        );
-    }
+//     if ($exception instanceof NotFoundHttpException) {
+//         return Response::error(
+//             __('Resource not found'),
+//             [],
+//             404
+//         );
+//     }
 
-    if ($exception instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException) {
-        return Response::error(
-            __('Method not allowed'),
-            [],
-            405
-        );
-    }
+//     if ($exception instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException) {
+//         return Response::error(
+//             __('Method not allowed'),
+//             [],
+//             405
+//         );
+//     }
 
-    // Handling Throttle Limit Exceeded (Too Many Requests)
-    if ($exception instanceof \Illuminate\Http\Exceptions\ThrottleRequestsException) {
-        return Response::error(
-            __('Too many requests'),
-            [],
-            429
-        );
-    }
+//     // Handling Throttle Limit Exceeded (Too Many Requests)
+//     if ($exception instanceof \Illuminate\Http\Exceptions\ThrottleRequestsException) {
+//         return Response::error(
+//             __('Too many requests'),
+//             [],
+//             429
+//         );
+//     }
 
-    if ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
-        return Response::error(
-            $exception->getMessage() ?: __('Internal server error'),
-            [],
-            $exception->getStatusCode()
-        );
-    }
+//     if ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
+//         return Response::error(
+//             $exception->getMessage() ?: __('Internal server error'),
+//             [],
+//             $exception->getStatusCode()
+//         );
+//     }
 
-    return Response::error(
-        $exception->getMessage() ?: __('Internal server error'),
-        [],
-        500
-    );
+//     return Response::error(
+//         $exception->getMessage() ?: __('Internal server error'),
+//         [],
+//         500
+//     );
 
 
 
-}
+// }
