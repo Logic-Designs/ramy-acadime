@@ -2,6 +2,10 @@
 
 return [
 
+
+    "frontend_url"=>"https://your-frontend-domain.com",
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
