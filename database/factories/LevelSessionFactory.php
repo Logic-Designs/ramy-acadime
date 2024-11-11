@@ -16,8 +16,8 @@ class LevelSessionFactory extends Factory
     public function definition()
     {
         return [
-            'name_en' => $this->faker->unique()->word,
-            'name_ar' => $this->faker->unique()->word,
+            'name_en' => $this->faker->word . time().rand(1, 5000),
+            'name_ar' => $this->faker->word. time().rand(1, 5000),
             'description_en' => $this->faker->sentence,
             'description_ar' => $this->faker->sentence,
             'level_id' => Level::inRandomOrder()->value('id') ?? Level::factory(),
