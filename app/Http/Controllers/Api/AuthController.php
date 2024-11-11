@@ -35,7 +35,13 @@ class AuthController extends Controller
 
         $user = $this->userService->store($validatedData);
 
-        return Response::success('User registered successfully.', ['user'=>new UserResource($user)], 201);
+        $token = $user->createToken('api-token')->plainTextToken;
+
+        return Response::success('User registered successfully.',
+            [
+                'user'=>new UserResource($user),
+                'token' => $token
+            ], 201);
     }
 
     // Login user
