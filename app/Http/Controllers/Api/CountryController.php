@@ -22,7 +22,7 @@ class CountryController extends Controller
     {
         $countries = $this->listCountries();
         return Response::success('Countries retrieved successfully.', [
-            'countries' => CountryResource::collection($countries)
+            CountryResource::collection($countries)
         ], 200, $this->getPagination($countries));
     }
 

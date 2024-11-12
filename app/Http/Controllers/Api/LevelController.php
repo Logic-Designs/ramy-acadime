@@ -22,7 +22,7 @@ class LevelController extends Controller
     {
         $levels = $this->listLevels();
         return Response::success('Levels retrieved successfully.', [
-            'levels' => LevelResource::collection($levels)
+            LevelResource::collection($levels)
         ], 200, $this->getPagination($levels));
     }
 

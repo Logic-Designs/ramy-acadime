@@ -28,7 +28,7 @@ class SessionTimeController extends Controller
         $sessionTimes = $this->listSessionTimes($filters, $search);
 
         return Response::success('Session times retrieved successfully.', [
-            'session_times' => SessionTimeResource::collection($sessionTimes)
+             SessionTimeResource::collection($sessionTimes)
         ], 200, $this->getPagination($sessionTimes));
     }
 

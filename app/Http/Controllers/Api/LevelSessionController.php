@@ -22,7 +22,7 @@ class LevelSessionController extends Controller
     {
         $sessions = $this->listLevelSessions(); // Use the method from the SessionTrait
         return Response::success('Level sessions retrieved successfully.', [
-            'sessions' => LevelSessionResource::collection($sessions)
+            LevelSessionResource::collection($sessions)
         ], 200, $this->getPagination($sessions));
     }
 

@@ -22,7 +22,7 @@ class CityController extends Controller
     {
         $cities = $this->listCities();
         return Response::success('Cities retrieved successfully.', [
-            'cities' => CityResource::collection($cities)
+            CityResource::collection($cities)
         ], 200, $this->getPagination($cities));
     }
 

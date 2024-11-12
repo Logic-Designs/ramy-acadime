@@ -28,7 +28,7 @@ class UserController extends Controller
     {
         $users = $this->listUsers();
         return Response::success('Users retrieved successfully.', [
-            'users' => UserResource::collection($users)
+           UserResource::collection($users)
         ], 200, $this->getPagination($users));
     }
 

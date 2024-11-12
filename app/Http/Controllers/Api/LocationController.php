@@ -22,7 +22,7 @@ class LocationController extends Controller
     {
         $locations = $this->listLocations();
         return Response::success('Locations retrieved successfully.', [
-            'locations' => LocationResource::collection($locations)
+            LocationResource::collection($locations)
         ], 200, $this->getPagination($locations));
     }
 

@@ -24,7 +24,7 @@ class RolePermissionController extends Controller
         $roles = Role::with('permissions')->get();
 
         return Response::success('Roles retrieved successfully.', [
-            'roles' => RoleResource::collection($roles),
+           RoleResource::collection($roles),
         ]);
     }
 
