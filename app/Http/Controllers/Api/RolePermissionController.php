@@ -23,9 +23,9 @@ class RolePermissionController extends Controller
         // Retrieve all roles with their permissions using a resource collection
         $roles = Role::with('permissions')->get();
 
-        return Response::success('Roles retrieved successfully.', [
+        return Response::success('Roles retrieved successfully.',
            RoleResource::collection($roles),
-        ]);
+        );
     }
 
     /**

@@ -21,9 +21,9 @@ class CountryController extends Controller
     public function index()
     {
         $countries = $this->listCountries();
-        return Response::success('Countries retrieved successfully.', [
+        return Response::success('Countries retrieved successfully.',
             CountryResource::collection($countries)
-        ], 200, $this->getPagination($countries));
+        , 200, $this->getPagination($countries));
     }
 
     /**

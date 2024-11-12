@@ -21,9 +21,9 @@ class CityController extends Controller
     public function index()
     {
         $cities = $this->listCities();
-        return Response::success('Cities retrieved successfully.', [
+        return Response::success('Cities retrieved successfully.',
             CityResource::collection($cities)
-        ], 200, $this->getPagination($cities));
+        , 200, $this->getPagination($cities));
     }
 
     /**

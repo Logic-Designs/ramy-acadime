@@ -21,9 +21,9 @@ class LocationController extends Controller
     public function index()
     {
         $locations = $this->listLocations();
-        return Response::success('Locations retrieved successfully.', [
+        return Response::success('Locations retrieved successfully.',
             LocationResource::collection($locations)
-        ], 200, $this->getPagination($locations));
+        , 200, $this->getPagination($locations));
     }
 
     /**

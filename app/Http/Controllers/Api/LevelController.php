@@ -21,9 +21,9 @@ class LevelController extends Controller
     public function index()
     {
         $levels = $this->listLevels();
-        return Response::success('Levels retrieved successfully.', [
+        return Response::success('Levels retrieved successfully.',
             LevelResource::collection($levels)
-        ], 200, $this->getPagination($levels));
+        , 200, $this->getPagination($levels));
     }
 
     /**

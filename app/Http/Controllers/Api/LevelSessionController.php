@@ -21,9 +21,9 @@ class LevelSessionController extends Controller
     public function index()
     {
         $sessions = $this->listLevelSessions(); // Use the method from the SessionTrait
-        return Response::success('Level sessions retrieved successfully.', [
+        return Response::success('Level sessions retrieved successfully.',
             LevelSessionResource::collection($sessions)
-        ], 200, $this->getPagination($sessions));
+        , 200, $this->getPagination($sessions));
     }
 
     /**

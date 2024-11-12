@@ -27,9 +27,9 @@ class UserController extends Controller
     public function index()
     {
         $users = $this->listUsers();
-        return Response::success('Users retrieved successfully.', [
+        return Response::success('Users retrieved successfully.',
            UserResource::collection($users)
-        ], 200, $this->getPagination($users));
+        , 200, $this->getPagination($users));
     }
 
 
