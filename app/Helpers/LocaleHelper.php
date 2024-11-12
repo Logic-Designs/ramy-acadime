@@ -35,7 +35,7 @@ class LocaleHelper
 
         foreach ($fields as $field) {
 
-            if (! $isAdmin || request()->has('lang')) {
+            if (! $isAdmin || request()->hasHeader('Accept-Language')) {
                 $dataFields[$field] = self::getLocalizedField($model, $field);
             }
 

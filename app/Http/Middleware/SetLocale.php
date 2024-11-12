@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Response as FacadesResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -14,15 +15,20 @@ class SetLocale
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next)
     {
-        $locale = $request->input('lang', 'en');
 
-        if (!in_array($locale, ['en', 'ar'])) {
-            return FacadesResponse::error('Invalid language specified.', [], 400);
-        }
+        $locale = $request->getPreferredLanguage(['en', 'ar']);
 
-        app()->setLocale($locale);
+        App::setLocale($locale);
+
+        // $locale = $request->input('lang', 'en');
+
+        // if (!in_array($locale, ['en', 'ar'])) {
+        //     return FacadesResponse::error('Invalid language specified.', [], 400);
+        // }
+
+        // app()->setLocale($locale);
 
         return $next($request);
     }
