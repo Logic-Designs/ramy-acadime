@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             LocationSeeder::class,
             UsersSeeder::class,
             LevelSessionSeeder::class,
+            SessionTimeSeeder::class,
         ]);
 
     }

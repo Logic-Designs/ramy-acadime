@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\LevelController;
 use App\Http\Controllers\Api\LevelSessionController;
 use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\RolePermissionController;
+use App\Http\Controllers\Api\SessionTimeController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('locations', LocationController::class);
         Route::apiResource('levels', LevelController::class);
         Route::apiResource('level-sessions', LevelSessionController::class);
+        Route::apiResource('session-times', SessionTimeController::class);
 
     });
 

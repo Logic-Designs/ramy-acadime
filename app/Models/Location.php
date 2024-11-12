@@ -25,4 +25,10 @@ class Location extends Model
         return $this->hasOneThrough(Country::class, City::class, 'id', 'id', 'city_id', 'country_id');
     }
 
+    public function sessionTimes()
+    {
+        return $this->hasMany(SessionTime::class);
+    }
+
+
 }
