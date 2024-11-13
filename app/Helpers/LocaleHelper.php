@@ -35,14 +35,14 @@ class LocaleHelper
 
         foreach ($fields as $field) {
 
-            if (! $isAdmin || request()->hasHeader('Accept-Language')) {
+            // if (! $isAdmin || request()->hasHeader('Accept-Language')) {
                 $dataFields[$field] = self::getLocalizedField($model, $field);
-            }
+            // }
 
-            if($isAdmin){
+            // if($isAdmin){
                 $dataFields[$field . '_en'] = $model->{$field . '_en'} ?? null;
                 $dataFields[$field . '_ar'] = $model->{$field . '_ar'} ?? null;
-            }
+            // }
         }
 
         return $dataFields;
