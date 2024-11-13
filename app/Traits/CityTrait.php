@@ -6,12 +6,14 @@ use App\Models\City;
 
 trait CityTrait
 {
+
+    use PaginationTrait;
     /**
      * List all cities with pagination.
      */
     public function listCities()
     {
-        return City::paginate(10); // Customize the pagination as needed
+        return $this->paginate(City::query()); // Customize the pagination as needed
     }
 
     /**
