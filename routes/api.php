@@ -17,10 +17,20 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('reset-password', [AuthController::class, 'resetPassword']);
 
+Route::get('countries', [CountryController::class, 'index']);
+Route::get('cities', [CityController::class, 'index']);
+Route::get('locations', [LocationController::class, 'index']);
+
+Route::get('levels', [LevelController::class, 'index']);
+Route::get('level-sessions', [LevelSessionController::class, 'index']);
+
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::get('session-times', [SessionTimeController::class, 'index']);
+
 
 
     Route::middleware('role:admin')->group(function () {
@@ -30,12 +40,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('roles/{roleId}/permissions', [RolePermissionController::class, 'assignPermission']);
         Route::delete('roles/{roleId}/permissions', [RolePermissionController::class, 'removePermission']);
 
-        Route::apiResource('countries', CountryController::class);
-        Route::apiResource('cities', CityController::class);
-        Route::apiResource('locations', LocationController::class);
-        Route::apiResource('levels', LevelController::class);
-        Route::apiResource('level-sessions', LevelSessionController::class);
-        Route::apiResource('session-times', SessionTimeController::class);
+        Route::apiResource('countries', CountryController::class)->except(['index']);
+        Route::apiResource('cities', CityController::class)->except(['index']);
+        Route::apiResource('locations', LocationController::class)->except(['index']);
+        Route::apiResource('levels', LevelController::class)->except(['index']);
+        Route::apiResource('level-sessions', LevelSessionController::class)->except(['index']);
+        Route::apiResource('session-times', SessionTimeController::class)->except(['index']);
 
     });
 
