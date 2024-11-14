@@ -13,7 +13,7 @@ trait CityTrait
      */
     public function listCities()
     {
-        return $this->paginate(City::query()); // Customize the pagination as needed
+        return $this->paginate(City::query(), ['id', 'name_ar', 'name_en', 'country_id']);
     }
 
     /**

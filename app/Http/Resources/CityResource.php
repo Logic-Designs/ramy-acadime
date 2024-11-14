@@ -24,18 +24,25 @@ class CityResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // Fetch the localized fields for the city
+        if (request()->query('simple')) {
+            return [
+                'id' => $this->id,
+                'name' => LocaleHelper::getLocalizedField($this, 'name', $this->isTwoLang),
+            ];
+        }
+
+        // Fetch the localized fields for the city in full mode
         $localizedData = LocaleHelper::getLocalizedFields($this, ['name'], $this->isTwoLang);
 
-        return
-            $localizedData + [
+        return $localizedData + [
             'id' => $this->id,
             'slug' => $this->slug,
             'country_id' => $this->country->id,
             'country_name' => LocaleHelper::getLocalizedField($this->country, 'name'),
-            'locations' => LocationResource::collection($this->whenLoaded('locations')), // Include related locations
+            'locations' => LocationResource::collection($this->whenLoaded('locations')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
+
     }
 }
