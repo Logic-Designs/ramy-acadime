@@ -30,14 +30,14 @@ class LevelPriceResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $localizedData = LocaleHelper::getLocalizedFields($this, ['currency_code'], $this->isTwoLang);
 
-        return $localizedData + [
+        return [
             'id' => $this->id,
             'price' => $this->price,
-            'country' => new CountryResource($this->whenLoaded('country'), $this->isTwoLang),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'country_name' => LocaleHelper::getLocalizedField($this->country ,'name'),
+            'country_id' => $this->country->id,
+            'country_currency_code' => LocaleHelper::getLocalizedField($this->country ,'currency_code'),
+            // 'country' => new CountryResource($this->whenLoaded('country'), $this->isTwoLang),
         ];
     }
 }

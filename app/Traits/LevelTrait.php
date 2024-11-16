@@ -9,7 +9,7 @@ trait LevelTrait
     use PaginationTrait;
     public function listLevels()
     {
-        return $this->paginate(Level::query());
+        return $this->paginate(Level::with('prices.country'));
     }
 
     public function createLevel(array $data)
