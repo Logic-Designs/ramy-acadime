@@ -41,7 +41,7 @@ class LevelController extends Controller
      */
     public function show(Level $level)
     {
-        return Response::success('Level retrieved successfully.', new LevelResource($level));
+        return Response::success('Level retrieved successfully.', new LevelResource($level->load('prices.country')));
     }
 
     /**
