@@ -22,9 +22,10 @@ class SessionTime extends Model
         return $this->belongsTo(Location::class);
     }
 
-    // public function bookings()
-    // {
-    //     return $this->hasMany(Booking::class);
-    // }
+    public function bookingTimes()
+    {
+        return $this->hasMany(BookingTime::class, 'session_time_id');
+    }
+
 
 }

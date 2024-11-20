@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SessionTimeResource extends JsonResource
+class BookingResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +16,10 @@ class SessionTimeResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'location_id' => $this->location_id,
-            'start_time' => $this->start_time,
-            'end_time' => $this->end_time,
-            'day_of_week' => $this->day_of_week,
-            // 'created_at' => $this->created_at,
-            // 'updated_at' => $this->updated_at,
+            'user' => new UserResource($this->whenLoaded('user')),
+            'level' => new LevelResource($this->whenLoaded('level')),
+            'location' => new LocationResource($this->whenLoaded('location')),
+            'times' => BookingTimeResource::collection($this->whenLoaded('times')),
         ];
     }
 }

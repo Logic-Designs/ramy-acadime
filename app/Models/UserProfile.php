@@ -16,7 +16,7 @@ class UserProfile extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function ciry()
+    public function city()
     {
         return $this->belongsTo(City::class);
     }

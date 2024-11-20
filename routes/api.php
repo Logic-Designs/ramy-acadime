@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\AvailableTimesController;
+use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\LevelController;
@@ -64,8 +66,16 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{user}', [UserController::class, 'update'])->can('update users');
         Route::delete('/{user}', [UserController::class, 'destroy'])->can('delete users');
 
-
     });
+
+
+    Route::get('/bookings', [BookingController::class, 'index']);
+    Route::post('/bookings', [BookingController::class, 'store']);
+    Route::get('/bookings/my', [BookingController::class, 'myBookings']);
+    Route::get('/bookings/{booking}', [BookingController::class, 'show']);
+    Route::get('/bookings/user/{userId}', [BookingController::class, 'userBookings']);
+
+    Route::get('/available-times/{level}', [AvailableTimesController::class, 'getAvailableTimes']);
 
 
 

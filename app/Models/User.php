@@ -99,4 +99,9 @@ class User extends Authenticatable
         $this->notify(new ResetPasswordNotification($url));
     }
 
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
 }

@@ -30,5 +30,10 @@ class Location extends Model
         return $this->hasMany(SessionTime::class);
     }
 
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
 
 }

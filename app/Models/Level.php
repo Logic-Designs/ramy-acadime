@@ -26,10 +26,4 @@ class Level extends Model
     {
         return $this->hasMany(LevelPrice::class);
     }
-
-    public function sessionTimes()
-    {
-        return $this->hasMany(SessionTime::class);
-    }
-
 }
