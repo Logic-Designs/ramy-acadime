@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\LevelResource;
 use App\Models\Level;
 use App\Services\AvailableTimesService;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +24,9 @@ class AvailableTimesController extends Controller
 
         $result = $this->availableTimesService->getAvailableTimes($cityId);
 
-        return Response::success('Available times retrieved successfully.', $result);
+        return Response::success('Available times retrieved successfully.', [
+            'level'=> new LevelResource($level),
+            'locations'=> $result
+        ]);
     }
 }

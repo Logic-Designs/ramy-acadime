@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\LocaleHelper;
 use App\Models\Location;
 use Illuminate\Support\Carbon;
 
@@ -49,7 +50,7 @@ class AvailableTimesService
 
         return [
             'location_id' => $location->id,
-            'location_name' => $location->name,
+            'location_name' => LocaleHelper::getLocalizedField($location, 'name'),
             'available_dates' => $this->formatDates($dates),
         ];
     }

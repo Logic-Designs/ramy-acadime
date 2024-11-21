@@ -39,6 +39,7 @@ class LevelResource extends JsonResource
             'gender' => $this->gender,
             'prices' => LevelPriceResource::collection($this->whenLoaded('prices')),
             'sessions' => LevelSessionResource::collection($this->whenLoaded('sessions')),
+            'sessions_count' => $this->sessions->count(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
