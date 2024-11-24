@@ -35,5 +35,17 @@ class Location extends Model
         return $this->hasMany(Booking::class);
     }
 
+    public function siteManagers()
+    {
+        return $this->belongsToMany(User::class, 'location_user');
+    }
+
+
+    public function coaches()
+    {
+        return $this->belongsToMany(User::class, 'location_coach');
+    }
+
+
 
 }

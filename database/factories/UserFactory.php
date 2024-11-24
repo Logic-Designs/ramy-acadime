@@ -31,4 +31,37 @@ class UserFactory extends Factory
             'profile'
         );
     }
+
+    public function asCoach()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => $this->faker->name,
+                'email' => $this->faker->unique()->safeEmail,
+                'email_verified_at' => now(),
+                'password' => bcrypt('password'),
+                'phone' => $this->faker->phoneNumber,
+                'first_name' => $this->faker->firstName,
+                'last_name' => $this->faker->lastName,
+                'remember_token' => Str::random(10),
+            ];
+        });
+    }
+
+    public function asSiteManager()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => $this->faker->name,
+                'email' => $this->faker->unique()->safeEmail,
+                'email_verified_at' => now(),
+                'password' => bcrypt('password'),
+                'phone' => $this->faker->phoneNumber,
+                'first_name' => $this->faker->firstName,
+                'last_name' => $this->faker->lastName,
+                'remember_token' => Str::random(10),
+            ];
+        });
+    }
+
 }

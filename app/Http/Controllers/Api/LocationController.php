@@ -3,10 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Location\AddCoachToLocation;
+use App\Http\Requests\Location\AddManagerToLocation;
+use App\Http\Requests\Location\RemoveCoachFromLocation;
+use App\Http\Requests\Location\RemoveManagerFromLocation;
 use App\Http\Requests\Location\StoreLocationRequest;
 use App\Http\Requests\Location\UpdateLocationRequest;
 use App\Http\Resources\LocationResource;
+use App\Http\Resources\UserResource;
 use App\Models\Location;
+use App\Models\User;
 use App\Traits\LocationTrait;
 use App\Traits\PaginationTrait;
 use Illuminate\Support\Facades\Response;
@@ -60,4 +66,64 @@ class LocationController extends Controller
         $this->deleteLocation($location);
         return Response::success('Location deleted successfully.');
     }
+
+
+    public function assignManagers(AddManagerToLocation $request, Location $location)
+    {
+        $user = User::findOrFail($request->user_id);
+
+        if (!$user->hasRole('site manager')) {
+            return Response::error('Not allowed', ['error' => 'The user does not have the required site manager role.'], 422);
+        }
+
+        $location->siteManagers()->syncWithoutDetaching([$request->user_id]);
+
+        return Response::success('Manager assigned successfully.', new LocationResource($location->load('siteManagers')));
+    }
+
+
+    public function getSiteManagers(Location $location)
+    {
+        $siteManagers = $location->siteManagers;
+
+        return Response::success('Site managers retrieved successfully.', UserResource::collection($siteManagers));
+    }
+
+    public function removeManager(RemoveManagerFromLocation $request, Location $location)
+    {
+        $location->siteManagers()->detach($request->user_id);
+
+        return Response::success('Manager removed successfully.', new LocationResource($location->load('siteManagers')));
+    }
+
+
+    public function assignCoachs(AddCoachToLocation $request, Location $location)
+    {
+        $user = User::findOrFail($request->user_id);
+
+        if (!$user->hasRole('coach')) {
+            return Response::error('Not allowed', ['error' => 'The user does not have the required coach role.'], 422);
+        }
+
+        $location->coaches()->syncWithoutDetaching([$request->user_id]);
+
+        return Response::success('Coach assigned successfully.', new LocationResource($location->load('coaches')));
+    }
+
+
+    public function getCoachs(Location $location)
+    {
+        $coaches = $location->coaches;
+
+        return Response::success('Coachs retrieved successfully.', UserResource::collection($coaches));
+    }
+
+    public function removeCoach(RemoveCoachFromLocation $request, Location $location)
+    {
+        $location->coaches()->detach($request->user_id);
+
+        return Response::success('Coach removed successfully.', new LocationResource($location->load('coaches')));
+    }
+
+
 }

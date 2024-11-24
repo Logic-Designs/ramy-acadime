@@ -44,10 +44,21 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::apiResource('countries', CountryController::class)->except(['index']);
         Route::apiResource('cities', CityController::class)->except(['index']);
+
         Route::apiResource('locations', LocationController::class)->except(['index']);
+        Route::post('locations/{location}/managers', [LocationController::class, 'assignManagers']);
+        Route::get('locations/{location}/managers', [LocationController::class, 'getSiteManagers']);
+        Route::delete('/locations/{location}/managers', [LocationController::class, 'removeManager']);
+        Route::post('locations/{location}/coaches', [LocationController::class, 'assignCoachs']);
+        Route::get('locations/{location}/coaches', [LocationController::class, 'getCoachs']);
+        Route::delete('/locations/{location}/coaches', [LocationController::class, 'removeCoach']);
+
         Route::apiResource('levels', LevelController::class)->except(['index']);
         Route::apiResource('level-sessions', LevelSessionController::class)->except(['index']);
         Route::apiResource('session-times', SessionTimeController::class)->except(['index']);
+
+
+
 
     });
 

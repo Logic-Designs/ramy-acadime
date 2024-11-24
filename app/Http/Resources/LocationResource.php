@@ -34,6 +34,7 @@ class LocationResource extends JsonResource
             'slug' => $this->slug,
             'map' => $this->map,
             'country_name' => LocaleHelper::getLocalizedField($this->country, 'name'),
+            'siteManagers' => UserResource::collection($this->whenLoaded('siteManagers')),
             // 'city_id' => $this->city->id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

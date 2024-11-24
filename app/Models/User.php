@@ -104,4 +104,10 @@ class User extends Authenticatable
         return $this->hasMany(Booking::class);
     }
 
+    public function location()
+    {
+        return $this->belongsTo(Location::class, 'location_user');
+    }
+
+
 }

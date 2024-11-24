@@ -21,7 +21,9 @@ class DatabaseSeeder extends Seeder
             // LocationSeeder::class,
             // UsersSeeder::class,
             // LevelSessionSeeder::class,
-            SessionTimeSeeder::class,
+            // SessionTimeSeeder::class,
+            // CoachesSeeder::class,
+            SiteManagersSeeder::class,
         ]);
 
     }
