@@ -73,7 +73,7 @@ class StoreBookingRequest extends FormRequest
                 'required',
                 'exists:session_times,id',
                 'exists_in_location:' . $this->location_id,
-                'matches_day_of_week'
+                // 'matches_day_of_week'
             ],
         ];
     }
