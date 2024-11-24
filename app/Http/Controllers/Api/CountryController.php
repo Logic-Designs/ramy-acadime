@@ -26,6 +26,7 @@ class CountryController extends Controller
         , 200, $this->getPagination($countries));
     }
 
+
     /**
      * Store a newly created country in storage.
      */
@@ -40,7 +41,7 @@ class CountryController extends Controller
      */
     public function show(Country $country)
     {
-        return Response::success('Country retrieved successfully.', new CountryResource($country->load('locations')));
+        return Response::success('Country retrieved successfully.', new CountryResource($country->load('cities')));
     }
 
     /**

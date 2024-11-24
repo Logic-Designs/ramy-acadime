@@ -40,7 +40,7 @@ class CityController extends Controller
      */
     public function show(City $city)
     {
-        return Response::success('City retrieved successfully.', new CityResource($city));
+        return Response::success('City retrieved successfully.', new CityResource($city->load('locations')));
     }
 
     /**
