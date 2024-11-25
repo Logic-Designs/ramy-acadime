@@ -64,7 +64,7 @@ class UserController extends Controller
         /** @var User $parent */
         $parent = Auth::user();
 
-        $child = $this->createUser($request->validated());
+        $child = $this->userService->store($request->validated());
 
         $parent->children()->attach($child->id);
 
