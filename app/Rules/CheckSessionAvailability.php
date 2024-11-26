@@ -31,15 +31,46 @@ class CheckSessionAvailability implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, \Closure $fail): void
     {
-        preg_match('/times\.(\d+)\.session_time_id/', $attribute, $matches);
-        $index = $matches[1] ?? null;
+        $isUpdate = !str_contains($attribute, 'times.');
 
-        if ($index === null) {
-            return;
+        if ($isUpdate) {
+            // Handle single booking update
+            $this->validateSingleBooking($value, $fail);
+        } else {
+            // Handle array of bookings
+            preg_match('/times\.(\d+)\.session_time_id/', $attribute, $matches);
+            $index = $matches[1] ?? null;
+
+            if ($index !== null) {
+                $sessionTimeId = request("times.$index.session_time_id");
+                $date = request("times.$index.date");
+                $this->validateBooking($sessionTimeId, $date, $fail);
+            }
         }
+    }
 
-        $sessionTimeId = request("times.$index.session_time_id");
-        $date = request("times.$index.date");
+    /**
+     * Validate a single booking.
+     *
+     * @param  mixed $value
+     * @param  \Closure $fail
+     */
+    protected function validateSingleBooking(mixed $value, \Closure $fail): void
+    {
+        $sessionTimeId = request('session_time_id');
+        $date = request('date');
+        $this->validateBooking($sessionTimeId, $date, $fail);
+    }
+
+    /**
+     * Validate a booking (common logic for single and multiple bookings).
+     *
+     * @param  mixed $sessionTimeId
+     * @param  mixed $date
+     * @param  \Closure $fail
+     */
+    protected function validateBooking(mixed $sessionTimeId, mixed $date, \Closure $fail): void
+    {
         $sessionTime = SessionTime::findOrFail($sessionTimeId);
 
         $location = Location::findOrFail($sessionTime->location_id);

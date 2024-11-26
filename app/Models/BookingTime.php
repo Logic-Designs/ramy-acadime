@@ -15,7 +15,10 @@ class BookingTime extends Model
         'level_session_id',
         'date',
         'status',
+        'coach_id',
     ];
+
+    public const STATUS = ['taken', 'not_taken', 'no_show'];
 
     public function booking()
     {
@@ -30,5 +33,10 @@ class BookingTime extends Model
     public function levelSession()
     {
         return $this->belongsTo(LevelSession::class);
+    }
+
+    public function coach()
+    {
+        return $this->belongsTo(User::class, 'coach_id');
     }
 }

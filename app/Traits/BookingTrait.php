@@ -85,6 +85,39 @@ trait BookingTrait
         }
     }
 
+    public function processBookingTimeUpdate(BookingTime $bookingTime, array $data)
+    {
+        DB::beginTransaction();
+
+        try {
+            $bookingTime->update($data);
+
+            DB::commit();
+
+            return $bookingTime->refresh();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
+    public function updateBookinTime(BookingTime $bookingTime, array $data)
+    {
+        DB::beginTransaction();
+
+        try {
+
+            $bookingTime->update($data);
+
+            DB::commit();
+
+            return $bookingTime->booking;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
     public function deleteBooking(Booking $booking)
     {
         $booking->delete();

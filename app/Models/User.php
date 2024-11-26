@@ -109,5 +109,16 @@ class User extends Authenticatable
         return $this->belongsTo(Location::class, 'location_user');
     }
 
+    public function hasAnyRole(array $roles): bool
+    {
+        foreach($roles as $role){
+            if ($this->hasRole($role))
+                return true;
+        }
+        return false;
+        // return in_array($this->role, $roles);
+    }
+
+
 
 }

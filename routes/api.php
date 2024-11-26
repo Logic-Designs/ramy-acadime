@@ -88,6 +88,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/user/{userId}', [BookingController::class, 'userBookings']);
         Route::put('/{booking}', [BookingController::class, 'update']);
         Route::delete('/{booking}', [BookingController::class, 'destroy']);
+        Route::get('/time/{bookingTime}', [BookingController::class, 'showBookingTime']);
+        Route::put('/time/{bookingTime}', [BookingController::class, 'updateBookingTime']);
     });
 
 

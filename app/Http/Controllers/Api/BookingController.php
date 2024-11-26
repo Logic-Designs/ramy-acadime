@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Booking\StoreBookingRequest;
 use App\Http\Requests\Booking\UpdateBookingRequest;
+use App\Http\Requests\Booking\UpdateBookingTimeRequest;
 use App\Http\Resources\BookingResource;
+use App\Http\Resources\BookingTimeResource;
 use App\Models\Booking;
+use App\Models\BookingTime;
 use App\Models\Level;
 use App\Models\SessionTime;
 use App\Traits\BookingTrait;
@@ -98,6 +101,30 @@ class BookingController extends Controller
                 new BookingResource($booking->load('times'))
             );
         } catch (\Exception $e) {
+            return Response::error($e->getMessage(), 422);
+        }
+    }
+
+    public function showBookingTime(BookingTime $bookingTime)
+    {
+
+        return Response::success(
+            'Booking time retrieved successfully.',
+            new BookingTimeResource($bookingTime->load('levelSession', 'coach'))
+        );
+    }
+
+    public function updateBookingTime(UpdateBookingTimeRequest $request, BookingTime $bookingTime)
+    {
+        try {
+            $bookingTime = $this->processBookingTimeUpdate($bookingTime, $request->validated());
+
+            return Response::success(
+                'Booking time updated successfully.',
+                new BookingTimeResource($bookingTime->load('coach'))
+            );
+        }
+        catch (\Exception $e) {
             return Response::error($e->getMessage(), 422);
         }
     }
