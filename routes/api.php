@@ -71,20 +71,25 @@ Route::middleware('auth:sanctum')->group(function () {
             ->can('deleteChild', 'child');
         });
 
-        Route::get('', [UserController::class, 'index'])->can('list users');
-        Route::post('', [UserController::class, 'store'])->can('create users');
-        Route::get('/{user}', [UserController::class, 'show'])->can('list users');
-        Route::put('/{user}', [UserController::class, 'update'])->can('update users');
-        Route::delete('/{user}', [UserController::class, 'destroy'])->can('delete users');
+        Route::get('', [UserController::class, 'index']);
+        Route::post('', [UserController::class, 'store']);
+        Route::get('/{user}', [UserController::class, 'show']);
+        Route::put('/{user}', [UserController::class, 'update']);
+        Route::delete('/{user}', [UserController::class, 'destroy']);
 
     });
 
 
-    Route::get('/bookings', [BookingController::class, 'index']);
-    Route::post('/bookings', [BookingController::class, 'store']);
-    Route::get('/bookings/my', [BookingController::class, 'myBookings']);
-    Route::get('/bookings/{booking}', [BookingController::class, 'show']);
-    Route::get('/bookings/user/{userId}', [BookingController::class, 'userBookings']);
+    Route::prefix('bookings')->group(function() {
+        Route::get('', [BookingController::class, 'index']);
+        Route::post('', [BookingController::class, 'store']);
+        Route::get('/my', [BookingController::class, 'myBookings']);
+        Route::get('/{booking}', [BookingController::class, 'show']);
+        Route::get('/user/{userId}', [BookingController::class, 'userBookings']);
+        Route::put('/{booking}', [BookingController::class, 'update']);
+        Route::delete('/{booking}', [BookingController::class, 'destroy']);
+    });
+
 
     Route::get('/available-times/{level}', [AvailableTimesController::class, 'getAvailableTimes']);
 

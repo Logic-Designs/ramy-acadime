@@ -29,11 +29,10 @@ class AvailableTimesRequest extends FormRequest
                 'nullable',
                 'exists:users,id',
                 function ($attribute, $value, $fail) {
-                    /** @var User $authUser  */
-                    $authUser = Auth::user();
+                    /** @var User $user  */
                     $user = User::find($value);
-                    if ($user && !$authUser->children()->where('child_id', $user->id)->exists()) {
-                        $fail('You are not the parent of this user.');
+                    if ($user && $user->hasRole('user')) {
+                        $fail("Can't get avilable time for this user");
                     }
                 },
             ],

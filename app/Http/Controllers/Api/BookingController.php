@@ -89,15 +89,19 @@ class BookingController extends Controller
     public function update(UpdateBookingRequest $request, Booking $booking)
     {
         $booking = $this->updateBooking($booking, $request->validated());
-        return Response::success(
-            'Booking updated successfully.',
-            new BookingResource($booking)
-        );
+
+        try {
+            $booking = $this->updateBooking($booking, $request->validated());
+
+            return Response::success(
+                'Booking updated successfully.',
+                new BookingResource($booking->load('times'))
+            );
+        } catch (\Exception $e) {
+            return Response::error($e->getMessage(), 422);
+        }
     }
 
-    /**
-     * Remove the specified booking from storage.
-     */
     public function destroy(Booking $booking)
     {
         $this->deleteBooking($booking);

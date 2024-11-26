@@ -53,54 +53,48 @@ trait BookingTrait
 
     public function updateBooking(Booking $booking, array $data)
     {
-        $booking->update($data);
-        return $booking;
+        DB::beginTransaction();
+
+        try {
+            if (isset($data['level_id'])) {
+                $booking->update(['level_id' => $data['level_id']]);
+            }
+            if (isset($data['location_id'])) {
+                $booking->update(['location_id' => $data['location_id']]);
+            }
+
+            if (isset($data['times'])) {
+                foreach ($data['times'] as $time) {
+                    if (isset($time['booking_time_id'])) {
+                        $existingBookingTime = BookingTime::find($time['booking_time_id']);
+                        if ($existingBookingTime) {
+                            $existingBookingTime->update([
+                                'date' => $time['date'],
+                                'session_time_id' => $time['session_time_id'],
+                            ]);
+                        }
+                    } else {
+                        BookingTime::create([
+                            'booking_id' => $booking->id,
+                            'session_time_id' => $time['session_time_id'],
+                            'date' => $time['date'],
+                        ]);
+                    }
+                }
+            }
+
+            DB::commit();
+
+            return $booking;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 
     public function deleteBooking(Booking $booking)
     {
         $booking->delete();
-    }
-
-
-    public function validateBookingConstraints(array $data)
-    {
-        $level = Level::with('sessionTimes')->findOrFail($data['level_id']);
-
-        // 1. Check count of sessions in the level
-        if ($level->sessionTimes->isEmpty()) {
-            abort(422, 'The selected level has no sessions.');
-        }
-
-        // 2. Check that all dates are after today
-        $today = now()->toDateString();
-        $invalidSessions = $level->sessionTimes->filter(
-            fn($session) => $session->day_of_week < $today
-        );
-
-        if ($invalidSessions->isNotEmpty()) {
-            abort(422, 'Some sessions are scheduled for dates before today.');
-        }
-
-        // 3. Check if session times are already booked
-        foreach ($level->sessionTimes as $session) {
-            foreach ($session->bookingTimes as $bookingTime) {
-                if (
-                    $bookingTime->date === $data['date'] &&
-                    $bookingTime->session_time_id === $session->id
-                ) {
-                    abort(422, "Session {$session->id} is already booked for {$data['date']}.");
-                }
-            }
-        }
-    }
-
-    private function operatorKeys(){
-        return [
-            'id'=> '==',
-            'user_id'=> '==',
-            'level_id'=> '==',
-        ];
     }
 
 }
