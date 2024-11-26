@@ -79,7 +79,7 @@ class BookingController extends Controller
 
         return Response::success(
             'Booking retrieved successfully.',
-            new BookingResource($booking->load('times', 'level'))
+            new BookingResource($booking->load('times.levelSession', 'level'))
         );
     }
 

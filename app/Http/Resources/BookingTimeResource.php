@@ -21,6 +21,7 @@ class BookingTimeResource extends JsonResource
             'session_time_start' => $this->sessionTime->start_time,
             'session_time_end' => $this->sessionTime->end_time,
             'date' => $this->date,
+            'levelSession' => new LevelSessionResource($this->whenLoaded('levelSession')),
         ];
     }
 }

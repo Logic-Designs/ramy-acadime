@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Helpers\LocaleHelper;
 use App\Models\Location;
+use App\Models\SessionTime;
+use App\Models\User;
 use Illuminate\Support\Carbon;
 
 class AvailableTimesService
@@ -111,4 +113,35 @@ class AvailableTimesService
             $dates
         );
     }
+
+
+    public function isTimeAvailable(string $date, int $userId, int $sessionTimeId): bool
+    {
+        $user = User::findOrFail($userId);
+
+        $cityId = $user->profile->city_id;
+
+        $session = SessionTime::findOrFail($sessionTimeId);
+
+        $location = $session->location;
+        if ($location->city_id != $cityId) {
+            return false;
+        }
+
+        $sessionDay = $session->day_of_week;
+        $givenDate = Carbon::parse($date);
+
+
+        $givenDayOfWeek = $givenDate->format('l');
+
+        if ($sessionDay !== $givenDayOfWeek) {
+            return false;
+        }
+
+        return !$session->bookingTimes->contains(function ($bookingTime) use ($date) {
+            return $bookingTime->date == $date;
+        });
+    }
+
+
 }

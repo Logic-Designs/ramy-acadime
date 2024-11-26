@@ -5,7 +5,10 @@ namespace App\Traits;
 use App\Models\Booking;
 use App\Models\BookingTime;
 use App\Models\Level;
+use App\Models\LevelSession;
+use App\Notifications\BookingStatusUpdated;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 trait BookingTrait
 {
@@ -13,7 +16,7 @@ trait BookingTrait
 
     public function listBookings($user_id = null)
     {
-        $bookings = Booking::with(['user', 'level', 'location', 'times']);
+        $bookings = Booking::with(['user', 'level', 'location', 'times.levelSession']);
         if($user_id){
             $bookings = $bookings->where('user_id', $user_id);
         }
@@ -33,11 +36,18 @@ trait BookingTrait
                 'user_id' => $data['user_id'],
             ]);
 
-            // Create associated booking times
-            foreach ($data['times'] as $time) {
+            $levelSessions = LevelSession::where('level_id', $data['level_id'])
+                ->orderBy('id')
+                ->pluck('id')
+                ->toArray();
+
+            $sortedTimes = collect($data['times'])->sortBy('date');
+
+            foreach ($sortedTimes as $index => $time) {
                 BookingTime::create([
                     'booking_id' => $booking->id,
                     'session_time_id' => $time['session_time_id'],
+                    'level_session_id' => $levelSessions[$index] ?? null,
                     'date' => $time['date'],
                 ]);
             }
@@ -51,33 +61,19 @@ trait BookingTrait
         }
     }
 
+
     public function updateBooking(Booking $booking, array $data)
     {
         DB::beginTransaction();
 
         try {
+            $statusChanged = isset($data['status']) && $data['status'] !== $booking->status;
+            $paymentStatusChanged = isset($data['payment_status']) && $data['payment_status'] !== $booking->payment_status;
 
             $booking->update($data);
 
-
-            if (isset($data['times'])) {
-                foreach ($data['times'] as $time) {
-                    if (isset($time['booking_time_id'])) {
-                        $existingBookingTime = BookingTime::find($time['booking_time_id']);
-                        if ($existingBookingTime) {
-                            $existingBookingTime->update([
-                                'date' => $time['date'],
-                                'session_time_id' => $time['session_time_id'],
-                            ]);
-                        }
-                    } else {
-                        BookingTime::create([
-                            'booking_id' => $booking->id,
-                            'session_time_id' => $time['session_time_id'],
-                            'date' => $time['date'],
-                        ]);
-                    }
-                }
+            if ($statusChanged || $paymentStatusChanged) {
+                Notification::send($booking->user, new BookingStatusUpdated($booking));
             }
 
             DB::commit();

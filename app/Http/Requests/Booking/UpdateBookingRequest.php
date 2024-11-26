@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests\Booking;
 
+use App\Rules\LevelExistsWithSessions;
+use App\Rules\LocationInUserCity;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
 class UpdateBookingRequest extends FormRequest
 {
@@ -21,40 +22,10 @@ class UpdateBookingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status'=> 'in:reserved,confirmed',
-            'payment_status'=> 'in:paid,unpaid',
-            'times' => ['nullable', 'array'],
-            'times.*.booking_time_id' => [
-                'required',
-                'exists:booking_times,id',
-                function ($attribute, $value, $fail) {
-                    $bookingId = $this->route('booking')->id;
-                    if (!\App\Models\BookingTime::where('id', $value)->where('booking_id', $bookingId)->exists()) {
-                        $fail("The provided booking time ID does not belong to this booking.");
-                    }
-                },
-            ],
-            'times.*.date' => [
-                'required_with:times',
-                'date',
-                'after:today',
-                function ($attribute, $value, $fail) {
-                    $dates = array_column($this->input('times', []), 'date');
-                    if (count(array_unique($dates)) !== count($dates)) {
-                        $fail("Dates must be unique across all times.");
-                    }
-                },
-            ],
-            'times.*.session_time_id' => [
-                'required_with:times',
-                'exists:session_times,id',
-                function ($attribute, $value, $fail) {
-                    $locationId = $this->input('location_id', $this->route('booking')->location_id);
-                    if (!\App\Models\Location::find($locationId)->sessionTimes()->where('id', $value)->exists()) {
-                        $fail("The selected session time is not available at the chosen location.");
-                    }
-                },
-            ],
+            'status' => 'in:reserved,confirmed',
+            'payment_status' => 'in:paid,unpaid',
+            'level_id' => ['exists:levels,id', new LevelExistsWithSessions],
+            // 'location_id' => ['exists:locations,id', new LocationInUserCity],
         ];
     }
 
@@ -64,7 +35,9 @@ class UpdateBookingRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'times.*.booking_time_id.exists' => 'The provided booking time ID does not exist.',
+            'status.in' => 'The status must be either reserved or confirmed.',
+            'payment_status.in' => 'The payment status must be either paid or unpaid.',
+            'level_id.exists' => 'The selected level is invalid.',
         ];
     }
 }

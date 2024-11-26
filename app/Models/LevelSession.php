@@ -21,4 +21,9 @@ class LevelSession extends Model
     {
         return $this->belongsTo(Level::class);
     }
+
+    public function bookingTimes()
+    {
+        return $this->hasMany(BookingTime::class);
+    }
 }

@@ -10,7 +10,11 @@ class BookingTime extends Model
     use HasFactory;
 
     protected $fillable = [
-        'booking_id', 'session_time_id', 'date',
+        'booking_id',
+        'session_time_id',
+        'level_session_id',
+        'date',
+        'status',
     ];
 
     public function booking()
@@ -21,5 +25,10 @@ class BookingTime extends Model
     public function sessionTime()
     {
         return $this->belongsTo(SessionTime::class);
+    }
+
+    public function levelSession()
+    {
+        return $this->belongsTo(LevelSession::class);
     }
 }
