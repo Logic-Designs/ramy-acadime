@@ -14,7 +14,7 @@ class Booking extends Model
     ];
 
     protected $fillable = [
-        'user_id', 'level_id', 'location_id', 'status'
+        'user_id', 'level_id', 'location_id', 'status', 'payment_status'
     ];
 
     public function user()

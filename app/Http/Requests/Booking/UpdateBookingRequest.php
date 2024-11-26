@@ -21,6 +21,8 @@ class UpdateBookingRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'status'=> 'in:reserved,confirmed',
+            'payment_status'=> 'in:paid,unpaid',
             'times' => ['nullable', 'array'],
             'times.*.booking_time_id' => [
                 'required',

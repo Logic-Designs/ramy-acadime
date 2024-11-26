@@ -16,6 +16,8 @@ class BookingResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'status' => $this->status,
+            'payment_status' => $this->payment_status,
             'user' => new UserResource($this->whenLoaded('user')),
             'level' => new LevelResource($this->whenLoaded('level')),
             'location' => new LocationResource($this->whenLoaded('location')),

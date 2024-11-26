@@ -56,12 +56,9 @@ trait BookingTrait
         DB::beginTransaction();
 
         try {
-            if (isset($data['level_id'])) {
-                $booking->update(['level_id' => $data['level_id']]);
-            }
-            if (isset($data['location_id'])) {
-                $booking->update(['location_id' => $data['location_id']]);
-            }
+
+            $booking->update($data);
+
 
             if (isset($data['times'])) {
                 foreach ($data['times'] as $time) {
