@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AvailableTimesController;
 use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\CountryController;
+use App\Http\Controllers\Api\EvaluationController;
 use App\Http\Controllers\Api\LevelController;
 use App\Http\Controllers\Api\LevelSessionController;
 use App\Http\Controllers\Api\LocationController;
@@ -96,6 +97,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/available-times/{level}', [AvailableTimesController::class, 'getAvailableTimes']);
 
 
+    Route::post('/evaluations/user', [EvaluationController::class, 'storeUserEvaluation']);
+    Route::post('/evaluations/coach', [EvaluationController::class, 'storeCoachEvaluation']);
 
 });
 

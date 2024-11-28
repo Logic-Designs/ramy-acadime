@@ -39,4 +39,10 @@ class BookingTime extends Model
     {
         return $this->belongsTo(User::class, 'coach_id');
     }
+
+    public function evaluations()
+    {
+        return $this->hasMany(Evaluation::class);
+    }
+
 }
