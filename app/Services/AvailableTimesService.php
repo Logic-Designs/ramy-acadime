@@ -65,9 +65,47 @@ class AvailableTimesService
      * @param Carbon $endDate
      * @return array
      */
+    // protected function getAvailableDates($location, $startDate, $endDate): array
+    // {
+    //     $dates = [];
+
+    //     foreach ($location->sessionTimes as $session) {
+    //         $sessionStart = $startDate->copy();
+
+    //         while ($sessionStart->lte($endDate)) {
+    //             $currentDate = $sessionStart->toDateString();
+
+    //             if ($sessionStart->format('l') !== $session->day_of_week) {
+    //                 $sessionStart->addDay();
+    //                 continue;
+    //             }
+
+    //             if (!$session->bookingTimes->contains('date', $currentDate)) {
+    //                 $dates[$currentDate][] = [
+    //                     'session_time_id' => $session->id,
+    //                     'start_time' => $session->start_time,
+    //                     'end_time' => $session->end_time,
+    //                 ];
+    //             }
+
+    //             $sessionStart->addDay();
+    //         }
+    //     }
+
+    //     ksort($dates); // Ensure dates are sorted
+    //     return $dates;
+    // }
+
     protected function getAvailableDates($location, $startDate, $endDate): array
     {
         $dates = [];
+
+        // Initialize all dates within the range
+        $currentDate = $startDate->copy();
+        while ($currentDate->lte($endDate)) {
+            $dates[$currentDate->toDateString()] = [];
+            $currentDate->addDay();
+        }
 
         foreach ($location->sessionTimes as $session) {
             $sessionStart = $startDate->copy();
@@ -95,6 +133,7 @@ class AvailableTimesService
         ksort($dates); // Ensure dates are sorted
         return $dates;
     }
+
 
     /**
      * Format dates into a structured array.
