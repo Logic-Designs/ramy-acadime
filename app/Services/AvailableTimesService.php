@@ -103,23 +103,29 @@ class AvailableTimesService
         // Initialize all dates within the range
         $currentDate = $startDate->copy();
         while ($currentDate->lte($endDate)) {
-            $dates[$currentDate->toDateString()] = [];
+            $formattedDate = $currentDate->toDateString();
+            $dates[$formattedDate] = [
+                'day_of_week' => $currentDate->format('l'), // Add the day of the week
+                'times' => [] // Initialize the times array for each date
+            ];
             $currentDate->addDay();
         }
 
+        // Process each session
         foreach ($location->sessionTimes as $session) {
             $sessionStart = $startDate->copy();
 
             while ($sessionStart->lte($endDate)) {
                 $currentDate = $sessionStart->toDateString();
+                $dayOfWeek = $sessionStart->format('l'); // Get the day of the week
 
-                if ($sessionStart->format('l') !== $session->day_of_week) {
+                if ($dayOfWeek !== $session->day_of_week) {
                     $sessionStart->addDay();
                     continue;
                 }
 
                 if (!$session->bookingTimes->contains('date', $currentDate)) {
-                    $dates[$currentDate][] = [
+                    $dates[$currentDate]['times'][] = [
                         'session_time_id' => $session->id,
                         'start_time' => $session->start_time,
                         'end_time' => $session->end_time,
@@ -135,6 +141,7 @@ class AvailableTimesService
     }
 
 
+
     /**
      * Format dates into a structured array.
      *
@@ -144,14 +151,16 @@ class AvailableTimesService
     protected function formatDates(array $dates): array
     {
         return array_map(
-            fn($date, $times) => [
+            fn($date, $data) => [
                 'date' => $date,
-                'times' => $times
+                'day_of_week' => $data['day_of_week'],  // Add day of the week
+                'times' => $data['times'], // Times for each date
             ],
             array_keys($dates),
             $dates
         );
     }
+
 
 
     public function isTimeAvailable(string $date, int $userId, int $sessionTimeId): bool
