@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\EvaluationController;
 use App\Http\Controllers\Api\LevelController;
 use App\Http\Controllers\Api\LevelSessionController;
 use App\Http\Controllers\Api\LocationController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\RolePermissionController;
 use App\Http\Controllers\Api\SessionTimeController;
 use App\Http\Controllers\Api\UserController;
@@ -31,6 +32,10 @@ Route::get('level-sessions', [LevelSessionController::class, 'index']);
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead']); // Mark as read
+    Route::post('/notifications/{id}/unread', [NotificationController::class, 'markAsUnread']); // Mark as unread
 
     Route::get('session-times', [SessionTimeController::class, 'index']);
 

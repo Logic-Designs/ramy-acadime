@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\UserRegistered;
 use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
@@ -36,6 +37,8 @@ class AuthController extends Controller
         $user = $this->userService->store($validatedData);
 
         $token = $user->createToken('api-token')->plainTextToken;
+
+        UserRegistered::dispatch($user);
 
         return Response::success('User registered successfully.',
             [
