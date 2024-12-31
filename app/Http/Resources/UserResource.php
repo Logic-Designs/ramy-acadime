@@ -30,6 +30,7 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'phone' => $this->phone,
+            'avatar' => $this->avatar?getUrl($this->avatar): url('images/defualte-user.png'),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'slug' => $this->slug,

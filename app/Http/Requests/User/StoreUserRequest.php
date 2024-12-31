@@ -30,6 +30,7 @@ class StoreUserRequest extends FormRequest
             'email' => 'required|string|email|max:255|unique:users,email',
             'phone' => 'required|string|max:15|unique:users,phone',
             'password' => 'required|string|min:8|confirmed',
+            'avatar' => 'nullable|image',
             'first_name' => 'required|string',
             'last_name' => 'nullable|string',
             'role' => ['nullable', 'string', Rule::in($roles)],

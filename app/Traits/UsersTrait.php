@@ -3,12 +3,20 @@
 namespace App\Traits;
 
 use App\Models\User;
+use App\Services\ImageService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 trait UsersTrait
 {
     use PaginationTrait;
+
+    protected $imageService;
+
+    public function __construct(ImageService $imageService)
+    {
+        $this->imageService = $imageService;
+    }
     /**
      * List all users with pagination.
      *
@@ -28,6 +36,9 @@ trait UsersTrait
      */
     public function createUser(array $data)
     {
+        if($data['avatar']){
+            $data['avatar'] = $this->imageService->store($data['avatar'], 'users');
+        }
         $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -70,6 +81,10 @@ trait UsersTrait
     {
         if (isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);
+        }
+
+        if(isset($data['avatar'])){
+            $data['avatar'] = $this->imageService->store($data['avatar'], 'users');
         }
 
         $user->update($data);

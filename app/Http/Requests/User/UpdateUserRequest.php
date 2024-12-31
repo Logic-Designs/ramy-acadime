@@ -50,6 +50,7 @@ class UpdateUserRequest extends FormRequest
                 'max:15',
                 Rule::unique('users')->ignore($userId),
             ],
+            'avatar' => 'nullable|image',
             'password' => 'nullable|string|min:8|confirmed',
             'first_name' => 'nullable|string',
             'last_name' => 'nullable|string',
