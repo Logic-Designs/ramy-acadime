@@ -27,6 +27,7 @@ class UserRegistered extends Notification
     {
         return [
             'message' => "A new user has registered: {$this->user->name} ({$this->user->email})",
+            'user_id'=> $this->user->id,
         ];
     }
 }

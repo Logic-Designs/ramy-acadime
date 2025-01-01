@@ -36,7 +36,7 @@ trait UsersTrait
      */
     public function createUser(array $data)
     {
-        if($data['avatar']){
+        if(isset($data['avatar'])){
             $data['avatar'] = $this->imageService->store($data['avatar'], 'users');
         }
         $user =  User::create([
